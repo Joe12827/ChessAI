@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert('Invalid move! Square is occupied.');
                 }
                 draggedPiece.classList.remove('dragging'); // Remove dragging class
-                const move = {from: startSquareId, to: square.id}
                 console.log(move);
             }
         });
