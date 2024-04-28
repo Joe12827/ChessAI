@@ -53,20 +53,20 @@ public class Board {
         return tiles[col][row] == null;
     }
 
-    public void makeMove(int[] start, int[] stop) {
-        if (tiles[stop[0]][stop[1]] != null) {
-            int value = tiles[stop[0]][stop[1]].getValue();
-            if (tiles[stop[0]][stop[1]].isWhite()) {
+    public void makeMove(Move move) {
+        if (tiles[move.getStop()[0]][move.getStop()[1]] != null) {
+            int value = tiles[move.getStop()[0]][move.getStop()[1]].getValue();
+            if (tiles[move.getStop()[0]][move.getStop()[1]].isWhite()) {
                 whiteUtility -= value;
             } else {
                 blackUtility -= value;
             }
             totalUtility = whiteUtility - blackUtility;
-            tiles[stop[0]][stop[1]].kill();
+            tiles[move.getStop()[0]][move.getStop()[1]].kill();
         }
 
-        tiles[stop[0]][stop[1]] = tiles[start[0]][start[1]];
-        tiles[start[0]][start[1]] = null;
+        tiles[move.getStop()[0]][move.getStop()[1]] = tiles[move.getStart()[0]][move.getStart()[1]];
+        tiles[move.getStart()[0]][move.getStart()[1]] = null;
     }
 
     @Override
