@@ -1,3 +1,4 @@
+package com;
 import java.util.ArrayList;
 
 public class Bishop extends Piece {
@@ -12,9 +13,8 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public ArrayList<ArrayList<Integer>> Moves(Board board) {
-        int num = 0;
-        ArrayList<ArrayList<Integer>> moves = new ArrayList<>();
+    public ArrayList<Move> Moves(Board board) {
+        ArrayList<Move> moves = new ArrayList<>();
 
         int tempCol = col + 1;
         int tempRow = row + 1;
@@ -22,10 +22,8 @@ public class Bishop extends Piece {
             if (board.isWhite(tempCol, tempRow) == white) {
                 break;
             }
-            moves.add(new ArrayList<>());
-            moves.get(num).add(tempCol);
-            moves.get(num).add(tempRow);
-            num++;
+            Move move = new Move(col, row, tempCol, tempRow);
+            moves.add(move);
             if (board.isWhite(tempCol, tempRow) != white) {
                 break;
             }
@@ -39,10 +37,8 @@ public class Bishop extends Piece {
             if (board.isWhite(tempCol, tempRow) == white) {
                 break;
             }
-            moves.add(new ArrayList<>());
-            moves.get(num).add(tempCol);
-            moves.get(num).add(tempRow);
-            num++;
+            Move move = new Move(col, row, tempCol, tempRow);
+            moves.add(move);
             if (board.isWhite(tempCol, tempRow) != white) {
                 break;
             }
@@ -56,10 +52,8 @@ public class Bishop extends Piece {
             if (board.isWhite(tempCol, tempRow) == white) {
                 break;
             }
-            moves.add(new ArrayList<>());
-            moves.get(num).add(tempCol);
-            moves.get(num).add(tempRow);
-            num++;
+            Move move = new Move(col, row, tempCol, tempRow);
+            moves.add(move);
             if (board.isWhite(tempCol, tempRow) != white) {
                 break;
             }
@@ -73,10 +67,8 @@ public class Bishop extends Piece {
             if (board.isWhite(tempCol, tempRow) == white) {
                 break;
             }
-            moves.add(new ArrayList<>());
-            moves.get(num).add(tempCol);
-            moves.get(num).add(tempRow);
-            num++;
+            Move move = new Move(col, row, tempCol, tempRow);
+            moves.add(move);
             if (board.isWhite(tempCol, tempRow) != white) {
                 break;
             }

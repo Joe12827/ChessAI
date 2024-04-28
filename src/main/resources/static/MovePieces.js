@@ -15,15 +15,22 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault(); // Prevent default behavior
 
             const draggedPiece = document.querySelector('.dragging');
-            const move = {from: startSquareId, to: square.id}
+            const move = {start: startSquareId, stop: square.id}
+
+            fetch('/api/board/move', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(move)
+            })
+            .then(() => {
+                console.log('Move Executed Successfully');
+                // Update HTML elements or display confirmation message
+            })
+            .catch(error => console.error('Error executing move:', error));
+
             if (draggedPiece) {
-                // Move the dragged piece to the target square
-                if (square.children.length === 0) { // Check if target square is empty
-                    square.appendChild(draggedPiece); // Append piece to target square
-                } else {
-                    // Square is not empty, do not allow drop
-                    alert('Invalid move! Square is occupied.');
-                }
                 draggedPiece.classList.remove('dragging'); // Remove dragging class
                 console.log(move);
             }

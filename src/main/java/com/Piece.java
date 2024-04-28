@@ -1,3 +1,4 @@
+package com;
 import java.util.ArrayList;
 
 public abstract class Piece {
@@ -22,7 +23,7 @@ public abstract class Piece {
         killed = true;
     }
 
-    public abstract ArrayList<ArrayList<Integer>> Moves(Board board);
+    public abstract ArrayList<Move> Moves(Board board);
 
     protected int getValue(){
         return this.value;

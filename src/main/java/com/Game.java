@@ -1,3 +1,4 @@
+package com;
 public class Game {
     public Board board;
     public State state = State.WHITE_TURN;

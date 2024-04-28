@@ -1,3 +1,4 @@
+package com;
 public class Player {
     public String name;
     public boolean isWhite;

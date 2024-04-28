@@ -1,3 +1,4 @@
+package com;
 public class Board {
     Piece[][] tiles = new Piece[8][8];
     int whiteUtility = 39;
@@ -53,7 +54,10 @@ public class Board {
         return tiles[col][row] == null;
     }
 
-    public void makeMove(Move move) {
+    public boolean makeMove(Move move) {
+        Piece piece = tiles[move.getStart()[0]][move.getStart()[1]];
+
+
         if (tiles[move.getStop()[0]][move.getStop()[1]] != null) {
             int value = tiles[move.getStop()[0]][move.getStop()[1]].getValue();
             if (tiles[move.getStop()[0]][move.getStop()[1]].isWhite()) {
@@ -67,6 +71,7 @@ public class Board {
 
         tiles[move.getStop()[0]][move.getStop()[1]] = tiles[move.getStart()[0]][move.getStart()[1]];
         tiles[move.getStart()[0]][move.getStart()[1]] = null;
+        return true
     }
 
     @Override
