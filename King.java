@@ -5,7 +5,7 @@ public class King extends Piece {
     int[][] possibleMoves = {{-1, 1},{0, 1},{1, 1},{-1, 0},{1, 0},{-1, -1},{0, -1},{-1, -1}};
 
     King(boolean white, int col, int row) {
-        super(white, col, row);
+        super(white, col, row, 0);
     }
 
     @Override

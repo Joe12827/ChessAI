@@ -5,6 +5,10 @@ public class Main {
         int[] start = {0, 1};
         int[] stop = {0, 2};
         board.makeMove(start, stop);
+
+        int[] wstart = {0, 7};
+        int[] wstop = {0, 2};
+        board.makeMove(wstart, wstop);
         System.err.println(board);
   }
 }

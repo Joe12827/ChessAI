@@ -1,5 +1,8 @@
 public class Board {
     Piece[][] tiles = new Piece[8][8];
+    int whiteUtility = 39;
+    int blackUtility = 39;
+    int totalUtility = whiteUtility - blackUtility;
 
     Board() {
         tiles = new Piece[8][8];
@@ -52,6 +55,13 @@ public class Board {
 
     public void makeMove(int[] start, int[] stop) {
         if (tiles[stop[0]][stop[1]] != null) {
+            int value = tiles[stop[0]][stop[1]].getValue();
+            if (tiles[stop[0]][stop[1]].isWhite()) {
+                whiteUtility -= value;
+            } else {
+                blackUtility -= value;
+            }
+            totalUtility = whiteUtility - blackUtility;
             tiles[stop[0]][stop[1]].kill();
         }
 
@@ -73,7 +83,14 @@ public class Board {
                     str += " ";
                 }
             }
-            str += "|\n";
+            str += "|";
+            if (r == 4) {
+                str += " B: " + blackUtility;
+            }
+            if (r == 3) {
+                str += " W: " + whiteUtility;
+            }
+            str += "\n";
             str += "-----------------";
             str += "\n";
         }

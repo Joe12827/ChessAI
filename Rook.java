@@ -3,13 +3,14 @@ import java.util.ArrayList;
 public class Rook extends Piece {
 
     Rook(boolean white, int col, int row) {
-        super(white, col, row);
+        super(white, col, row, 5);
     }
 
     @Override
     public String toString() {
         return "R";
     }
+    
 
     @Override
     public ArrayList<ArrayList<Integer>> Moves(Board board) {

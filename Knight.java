@@ -4,8 +4,7 @@ public class Knight extends Piece {
     int[][] possibleMoves = {{-1, 2},{1, 2},{2, 1},{2, -1},{-2, 1},{-2, -1},{-2, -1},{-2, 1}};
 
     Knight(boolean white, int col, int row) {
-        super(white, col, row);
-        //TODO Auto-generated constructor stub
+        super(white, col, row, 3);
     }
 
     @Override

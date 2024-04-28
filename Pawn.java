@@ -3,8 +3,7 @@ import java.util.ArrayList;
 public class Pawn extends Piece {
     
     Pawn(boolean white, int col, int row) {
-        super(white, col, row);
-        //TODO Auto-generated constructor stub
+        super(white, col, row, 1);
     }
 
     @Override

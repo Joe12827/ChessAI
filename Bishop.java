@@ -3,8 +3,7 @@ import java.util.ArrayList;
 public class Bishop extends Piece {
 
     Bishop(boolean white, int col, int row) {
-        super(white, col, row);
-        //TODO Auto-generated constructor stub
+        super(white, col, row, 3);
     }
 
     @Override
