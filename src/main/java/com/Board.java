@@ -7,6 +7,17 @@ public class Board {
     int whiteUtility = 39;
     int blackUtility = 39;
     int totalUtility = whiteUtility - blackUtility;
+    State state = State.WHITE_TURN;
+
+    Brain brain = new Brain(false);
+
+    enum State {
+        WHITE_TURN,
+        BLACK_TURN,
+        DRAW,
+        WHITE_WINNER,
+        BLACK_WINNER
+    }
 
     Board() {
         tiles = new Piece[8][8];
@@ -59,6 +70,17 @@ public class Board {
 
     public boolean makeMove(Move move) {
         Piece piece = tiles[move.getStart()[0]][move.getStart()[1]];
+
+        if (state == State.WHITE_TURN && !piece.isWhite()) {
+            System.out.println("Not Black's Turn");
+            return false;
+        }
+
+        if (state == State.BLACK_TURN && piece.isWhite()) {
+            System.out.println("Not White's Turn");
+            return false;
+        }
+
         ArrayList<Move> moves = piece.Moves(this);
 
         // System.out.println(moves);
@@ -77,13 +99,26 @@ public class Board {
                 blackUtility -= value;
             }
             totalUtility = whiteUtility - blackUtility;
+            if (tiles[move.getStop()[0]][move.getStop()[1]].value == 100) {
+                if (state == State.WHITE_TURN) {
+                    state = State.WHITE_WINNER;
+                } else {
+                    state = State.BLACK_WINNER;
+                }
+            }
             tiles[move.getStop()[0]][move.getStop()[1]].kill();
         }
-
 
         tiles[move.getStop()[0]][move.getStop()[1]] = piece;
         tiles[move.getStart()[0]][move.getStart()[1]] = null;
         piece.setLocation(move.getStop()[0], move.getStop()[1]);
+
+        if (state == State.WHITE_TURN) {
+            state = State.BLACK_TURN;
+        } else {
+            state = State.WHITE_TURN;
+        }
+
         System.err.println(this);
         return true;
     }
@@ -111,7 +146,19 @@ public class Board {
             }
             str += "\n";
             str += "-----------------";
+            if (r == 4) {
+                if (state == State.WHITE_TURN) {
+                    str += " Turn: WHITE";
+                } else {
+                    str += " Turn: BLACK";
+                }
+            }
             str += "\n";
+        }
+        if (brain.white && state == State.WHITE_TURN) {
+            str += brain.findAllMoves(this);
+        } else {
+            str += brain.findAllMoves(this);
         }
         return str;
     }

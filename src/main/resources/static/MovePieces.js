@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => {
                 if (response.ok) {
                     console.log('Move Executed Successfully');
+                    const existingPiece = square.querySelector('.chess-board td img');
+                    if (existingPiece) {
+                        existingPiece.remove(); // Remove the existing piece image
+                    }
                     square.appendChild(draggedPiece);
                 }
             })
