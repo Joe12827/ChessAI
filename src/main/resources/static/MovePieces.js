@@ -24,9 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify(move)
             })
-            .then(() => {
-                console.log('Move Executed Successfully');
-                // Update HTML elements or display confirmation message
+            .then(response => {
+                if (response.ok) {
+                    console.log('Move Executed Successfully');
+                    square.appendChild(draggedPiece);
+                }
             })
             .catch(error => console.error('Error executing move:', error));
 

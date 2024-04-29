@@ -1,6 +1,8 @@
 package com;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +22,13 @@ public class BoardController {
     }
 
     @PostMapping("/move")
-    public void makeMove(@RequestBody MoveJSON json) {
-        boardService.makeMove(json); // Execute the specified move
+    public ResponseEntity<String> makeMove(@RequestBody MoveJSON json) {
+        boolean response = boardService.makeMove(json); // Execute the specified move
+        if (response) {
+            return ResponseEntity.ok("Move executed successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid Move");
+        }
     }
     
 }

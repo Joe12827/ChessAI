@@ -14,23 +14,30 @@ public class Pawn extends Piece {
 
     @Override
     public ArrayList<Move> Moves(Board board) {
-
+        int forward = 1;
+        if (!white) {
+            forward = -1;
+        }
         ArrayList<Move> moves = new ArrayList<>();
-        if (board.isWhite(col + 1, row + 1) != white) {
-            Move move = new Move(col, row, col + 1, row + 1);
+        if (inBounds(col + 1, row + forward) && !board.isEmpty(col + 1, row + forward)) {
+            if (board.isWhite(col + 1, row + forward) != white) {
+                Move move = new Move(col, row, col + 1, row + forward);
+                moves.add(move);
+            }
+        }
+        if (inBounds(col - 1, row + forward) && !board.isEmpty(col - 1, row + forward)) {
+            if (board.isWhite(col - 1, row + forward) != white) {
+                Move move = new Move(col, row, col - 1, row + forward);
+                moves.add(move);
+            }
+        }
+        if (inBounds(col, row + forward) && board.isEmpty(col, row + forward)) {
+            Move move = new Move(col, row, col, row + forward);
             moves.add(move);
         }
-        if (board.isWhite(col - 1, row + 1) != white) {
-            Move move = new Move(col, row, col - 1, row + 1);
-            moves.add(move);
-        }
-        if (board.isEmpty(col, row + 1)) {
-            Move move = new Move(col, row, col, row + 1);
-            moves.add(move);
-        }
-        if (board.isEmpty(col, row + 2)) {
+        if (board.isEmpty(col, row + (forward * 2))) {
             if ((white && row == 1) || (!white && row == 6)) {
-                Move move = new Move(col, row, col, row + 2);
+                Move move = new Move(col, row, col, row + (2 * forward));
                 moves.add(move);
             }
         }

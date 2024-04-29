@@ -1,4 +1,7 @@
 package com;
+
+import java.util.ArrayList;
+
 public class Board {
     Piece[][] tiles = new Piece[8][8];
     int whiteUtility = 39;
@@ -56,7 +59,12 @@ public class Board {
 
     public boolean makeMove(Move move) {
         Piece piece = tiles[move.getStart()[0]][move.getStart()[1]];
+        ArrayList<Move> moves = piece.Moves(this);
 
+        if (!moves.contains(move)) {
+            System.out.println("CANNOT MAKE THIS MOVE");
+            return false;
+        }
 
         if (tiles[move.getStop()[0]][move.getStop()[1]] != null) {
             int value = tiles[move.getStop()[0]][move.getStop()[1]].getValue();
@@ -71,7 +79,8 @@ public class Board {
 
         tiles[move.getStop()[0]][move.getStop()[1]] = tiles[move.getStart()[0]][move.getStart()[1]];
         tiles[move.getStart()[0]][move.getStart()[1]] = null;
-        return true
+        System.err.println(this);
+        return true;
     }
 
     @Override

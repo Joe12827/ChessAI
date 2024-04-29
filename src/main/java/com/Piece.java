@@ -15,6 +15,10 @@ public abstract class Piece {
         this.value = value;
     }
 
+    public boolean inBounds (int col, int row) {
+        return (col >= 0 && col <= 7 && row >= 0 && row <= 7);
+    }
+
     public boolean isWhite() {
         return white;
     }

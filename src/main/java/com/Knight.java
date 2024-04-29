@@ -17,17 +17,18 @@ public class Knight extends Piece {
     public ArrayList<Move> Moves(Board board) {
         ArrayList<Move> moves = new ArrayList<>();
         for (int[] setMove : possibleMoves) {
-            if (col + setMove[0] >= 0 && col + setMove[0] <= 7 && row + setMove[1] >= 0 && row + setMove[1] <= 7) {
-                if (board.isWhite(col + setMove[0], row + setMove[1]) != white){
+            if (inBounds(col + setMove[0], row + setMove[1])) {
+                if (!board.isEmpty(col + setMove[0], row + setMove[1])) {
+                    if (board.isWhite(col + setMove[0], row + setMove[1]) != white){
+                        Move move = new Move(col, row, col + setMove[0], row + setMove[1]);
+                        moves.add(move);
+                    }
+                } else {
                     Move move = new Move(col, row, col + setMove[0], row + setMove[1]);
                     moves.add(move);
                 }
             }
-                
         }
         return moves;
-    }
-
-   
-    
+    } 
 }

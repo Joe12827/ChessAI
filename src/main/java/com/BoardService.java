@@ -11,8 +11,8 @@ public class BoardService {
         return board.toString(); // Get current board state as a string
     }
 
-    public void makeMove(MoveJSON json) {
+    public boolean makeMove(MoveJSON json) {
         Move move = new Move(json);
-        board.makeMove(move); // Execute the specified move on the board
+        return board.makeMove(move); // Execute the specified move on the board
     }
 }

@@ -81,7 +81,7 @@ public class Queen extends Piece {
             if (board.isWhite(col, tempRow) == white) {
                 break;
             }
-            Move move = new Move(col, row, tempCol, tempRow);
+            Move move = new Move(col, row, col, tempRow);
             moves.add(move);
             if (board.isWhite(col, tempRow) != white) {
                 break;
@@ -94,7 +94,7 @@ public class Queen extends Piece {
             if (board.isWhite(col, tempRow) == white) {
                 break;
             }
-            Move move = new Move(col, row, tempCol, tempRow);
+            Move move = new Move(col, row, col, tempRow);
             moves.add(move);
             if (board.isWhite(col, tempRow) != white) {
                 break;
@@ -107,7 +107,7 @@ public class Queen extends Piece {
             if (board.isWhite(tempCol, row) == white) {
                 break;
             }
-            Move move = new Move(col, row, tempCol, tempRow);
+            Move move = new Move(col, row, tempCol, row);
             moves.add(move);
             if (board.isWhite(tempCol, row) != white) {
                 break;
@@ -121,7 +121,7 @@ public class Queen extends Piece {
             if (board.isWhite(tempCol, row) == white) {
                 break;
             }
-            Move move = new Move(col, row, tempCol, tempRow);
+            Move move = new Move(col, row, tempCol, row);
             moves.add(move);
             if (board.isWhite(tempCol, row) != white) {
                 break;
