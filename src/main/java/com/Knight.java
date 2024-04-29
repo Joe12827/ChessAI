@@ -2,7 +2,7 @@ package com;
 import java.util.ArrayList;
 
 public class Knight extends Piece {
-    int[][] possibleMoves = {{-1, 2},{1, 2},{2, 1},{2, -1},{-2, 1},{-2, -1},{-2, -1},{-2, 1}};
+    int[][] possibleMoves = {{-1, 2},{1, 2},{2, 1},{2, -1},{-2, 1},{-2, -1},{-1, -2},{1, -2}};
 
     Knight(boolean white, int col, int row) {
         super(white, col, row, 3);

@@ -19,13 +19,17 @@ public class Bishop extends Piece {
         int tempCol = col + 1;
         int tempRow = row + 1;
         while (tempCol < 8 && tempRow < 8) {
-            if (board.isWhite(tempCol, tempRow) == white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, tempCol, tempRow);
             moves.add(move);
-            if (board.isWhite(tempCol, tempRow) != white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) != white) {
+                    break;
+                }
             }
             tempCol++;
             tempRow++;
@@ -34,13 +38,17 @@ public class Bishop extends Piece {
         tempCol = col - 1;
         tempRow = row + 1;
         while (tempCol >= 0 && tempRow < 8) {
-            if (board.isWhite(tempCol, tempRow) == white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, tempCol, tempRow);
             moves.add(move);
-            if (board.isWhite(tempCol, tempRow) != white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) != white) {
+                    break;
+                }
             }
             tempCol--;
             tempRow++;
@@ -49,13 +57,17 @@ public class Bishop extends Piece {
         tempCol = col - 1;
         tempRow = row - 1;
         while (tempCol >= 0 && tempRow >= 0) {
-            if (board.isWhite(tempCol, tempRow) == white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, tempCol, tempRow);
             moves.add(move);
-            if (board.isWhite(tempCol, tempRow) != white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) != white) {
+                    break;
+                }
             }
             tempCol--;
             tempRow--;
@@ -64,13 +76,17 @@ public class Bishop extends Piece {
         tempCol = col + 1;
         tempRow = row - 1;
         while (tempCol < 8 && tempRow >= 0) {
-            if (board.isWhite(tempCol, tempRow) == white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, tempCol, tempRow);
             moves.add(move);
-            if (board.isWhite(tempCol, tempRow) != white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) != white) {
+                    break;
+                }
             }
             tempCol++;
             tempRow--;

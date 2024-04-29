@@ -61,6 +61,9 @@ public class Board {
         Piece piece = tiles[move.getStart()[0]][move.getStart()[1]];
         ArrayList<Move> moves = piece.Moves(this);
 
+        // System.out.println(moves);
+        // System.out.println(move);
+
         if (!moves.contains(move)) {
             System.out.println("CANNOT MAKE THIS MOVE");
             return false;
@@ -77,8 +80,10 @@ public class Board {
             tiles[move.getStop()[0]][move.getStop()[1]].kill();
         }
 
-        tiles[move.getStop()[0]][move.getStop()[1]] = tiles[move.getStart()[0]][move.getStart()[1]];
+
+        tiles[move.getStop()[0]][move.getStop()[1]] = piece;
         tiles[move.getStart()[0]][move.getStart()[1]] = null;
+        piece.setLocation(move.getStop()[0], move.getStop()[1]);
         System.err.println(this);
         return true;
     }

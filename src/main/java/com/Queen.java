@@ -19,14 +19,20 @@ public class Queen extends Piece {
         int tempCol = col + 1;
         int tempRow = row + 1;
         while (tempCol < 8 && tempRow < 8) {
-            if (board.isWhite(tempCol, tempRow) == white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) == white) {
+                    break;
+                }
             }
+
             Move move = new Move(col, row, tempCol, tempRow);
             moves.add(move);
-            if (board.isWhite(tempCol, tempRow) != white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) != white) {
+                    break;
+                }
             }
+            
             tempCol++;
             tempRow++;
         }
@@ -34,13 +40,17 @@ public class Queen extends Piece {
         tempCol = col - 1;
         tempRow = row + 1;
         while (tempCol >= 0 && tempRow < 8) {
-            if (board.isWhite(tempCol, tempRow) == white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, tempCol, tempRow);
             moves.add(move);
-            if (board.isWhite(tempCol, tempRow) != white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) != white) {
+                    break;
+                }
             }
             tempCol--;
             tempRow++;
@@ -49,13 +59,17 @@ public class Queen extends Piece {
         tempCol = col - 1;
         tempRow = row - 1;
         while (tempCol >= 0 && tempRow >= 0) {
-            if (board.isWhite(tempCol, tempRow) == white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, tempCol, tempRow);
             moves.add(move);
-            if (board.isWhite(tempCol, tempRow) != white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) != white) {
+                    break;
+                }
             }
             tempCol--;
             tempRow--;
@@ -64,13 +78,17 @@ public class Queen extends Piece {
         tempCol = col + 1;
         tempRow = row - 1;
         while (tempCol < 8 && tempRow >= 0) {
-            if (board.isWhite(tempCol, tempRow) == white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, tempCol, tempRow);
             moves.add(move);
-            if (board.isWhite(tempCol, tempRow) != white) {
-                break;
+            if (!board.isEmpty(tempCol, tempRow)) {
+                if (board.isWhite(tempCol, tempRow) != white) {
+                    break;
+                }
             }
             tempCol++;
             tempRow--;
@@ -78,39 +96,51 @@ public class Queen extends Piece {
 
         tempRow = row + 1;
         while (tempRow < 8) {
-            if (board.isWhite(col, tempRow) == white) {
-                break;
+            if (!board.isEmpty(col, tempRow)) {
+                if (board.isWhite(col, tempRow) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, col, tempRow);
             moves.add(move);
-            if (board.isWhite(col, tempRow) != white) {
-                break;
+            if (!board.isEmpty(col, tempRow)) {
+                if (board.isWhite(col, tempRow) != white) {
+                    break;
+                }
             }
             tempRow++;
         }
 
         tempRow = row - 1;
         while (tempRow >= 0) {
-            if (board.isWhite(col, tempRow) == white) {
-                break;
+            if (!board.isEmpty(col, tempRow)) {
+                if (board.isWhite(col, tempRow) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, col, tempRow);
             moves.add(move);
-            if (board.isWhite(col, tempRow) != white) {
-                break;
+            if (!board.isEmpty(col, tempRow)) {
+                if (board.isWhite(col, tempRow) != white) {
+                    break;
+                }
             }
             tempRow--;
         }
 
         tempCol = col + 1;
         while (tempCol < 8) {
-            if (board.isWhite(tempCol, row) == white) {
-                break;
+            if (!board.isEmpty(tempCol, row)) {
+                if (board.isWhite(tempCol, row) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, tempCol, row);
             moves.add(move);
-            if (board.isWhite(tempCol, row) != white) {
-                break;
+            if (!board.isEmpty(tempCol, row)) {
+                if (board.isWhite(tempCol, row) != white) {
+                    break;
+                }
             }
             tempCol++;
         }
@@ -118,15 +148,19 @@ public class Queen extends Piece {
         tempCol = col - 1;
 
         while (tempCol >= 0) {
-            if (board.isWhite(tempCol, row) == white) {
-                break;
+            if (!board.isEmpty(tempCol, row)) {
+                if (board.isWhite(tempCol, row) == white) {
+                    break;
+                }
             }
             Move move = new Move(col, row, tempCol, row);
             moves.add(move);
-            if (board.isWhite(tempCol, row) != white) {
-                break;
+            if (!board.isEmpty(tempCol, row)) {
+                if (board.isWhite(tempCol, row) != white) {
+                    break;
+                }
             }
-            tempCol++;
+            tempCol--;
         }
 
         return moves;

@@ -27,6 +27,11 @@ public abstract class Piece {
         killed = true;
     }
 
+    public void setLocation(int col, int row) {
+        this.col = col;
+        this.row = row;
+    }
+
     public abstract ArrayList<Move> Moves(Board board);
 
     protected int getValue(){
