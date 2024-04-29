@@ -9,6 +9,11 @@ public class King extends Piece {
         super(white, col, row, 100);
     }
 
+    King(boolean white, int col, int row, boolean castlingDone) {
+        super(white, col, row, 100);
+        this.castlingDone = castlingDone;
+    }
+
     @Override
     public String toString() {
         return "X";
@@ -33,6 +38,12 @@ public class King extends Piece {
                 
         }
         return moves;
+    }
+
+    @Override
+    public Piece copyPiece() {
+        King newKing = new King(this.white, this.col, this.row, this.castlingDone);
+        return newKing;
     }
 
    

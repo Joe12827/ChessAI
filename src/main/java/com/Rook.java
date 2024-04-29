@@ -91,5 +91,11 @@ public class Rook extends Piece {
 
         return moves;
     }
+
+    @Override
+    public Piece copyPiece() {
+        Rook newRook = new Rook(this.white, this.col, this.row);
+        return newRook;
+    }
     
 }

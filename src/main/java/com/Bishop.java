@@ -95,4 +95,9 @@ public class Bishop extends Piece {
         return moves;
     }
     
+    @Override
+    public Piece copyPiece() {
+        Bishop newBishop = new Bishop(this.white, this.col, this.row);
+        return newBishop;
+    }
 }

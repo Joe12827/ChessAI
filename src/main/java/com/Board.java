@@ -24,6 +24,7 @@ public class Board {
     Board(boolean empty) {
         tiles = new Piece[8][8];
 
+
         if (!empty) {
             // WHITE
             tiles[0][1] = new Pawn(true, 0, 1);
@@ -79,16 +80,22 @@ public class Board {
         Board boardCopy = new Board(true);
         for (int row = 7; row >= 0; row--) {
             for (int col = 0; col < 8; col++) {
-                boardCopy.tiles[col][row] =  this.tiles[col][row];
-
+                if (this.tiles[col][row] != null) {
+                    boardCopy.tiles[col][row] =  this.tiles[col][row].copyPiece();
+                }
             }
         }
+        boardCopy.state = state;
+        boardCopy.whiteUtility = whiteUtility;
+        boardCopy.blackUtility = blackUtility;
+        boardCopy.totalUtility = whiteUtility - blackUtility;
         return boardCopy;
     }
 
     public boolean makeMove(Move move) {
         Piece piece = tiles[move.getStart()[0]][move.getStart()[1]];
 
+        System.out.println("Make Move: " + move);
         if (state == State.WHITE_TURN && !piece.isWhite()) {
             System.out.println("Not Black's Turn");
             return false;
@@ -137,7 +144,7 @@ public class Board {
             state = State.WHITE_TURN;
         }
 
-        System.err.println(this);
+        // System.out.println(this);
         return true;
     }
 
@@ -173,12 +180,15 @@ public class Board {
             }
             str += "\n";
         }
-        Brain brain = new Brain(false, 5, this);
-        if (brain.white && state == State.WHITE_TURN) {
-            str += brain.findCurrentMoves(this);
-        } else {
-            str += brain.findCurrentMoves(this);
-        }
+
+    
+        // str += brain.getMinimax().toString();
+
+        // if (brain.white && state == State.WHITE_TURN) {
+        //     str += brain.findCurrentMoves(this);
+        // } else {
+        //     str += brain.findCurrentMoves(this);
+        // }
         return str;
     }
 }

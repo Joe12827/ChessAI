@@ -15,6 +15,8 @@ public abstract class Piece {
         this.value = value;
     }
 
+    public abstract Piece copyPiece();
+
     public boolean inBounds (int col, int row) {
         return (col >= 0 && col <= 7 && row >= 0 && row <= 7);
     }

@@ -165,5 +165,11 @@ public class Queen extends Piece {
 
         return moves;
     }
+
+    @Override
+    public Piece copyPiece() {
+        Queen newQueen = new Queen(this.white, this.col, this.row);
+        return newQueen;
+    }
     
 }

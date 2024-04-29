@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BoardService {
 
-    private Board board = new Board(); // Instantiate the Board
+    private Board board = new Board(false); // Instantiate the Board
 
     public String getBoardState() {
         return board.toString(); // Get current board state as a string

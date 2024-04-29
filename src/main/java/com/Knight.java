@@ -30,5 +30,12 @@ public class Knight extends Piece {
             }
         }
         return moves;
-    } 
+    }
+
+    @Override
+    public Piece copyPiece() {
+        Knight newKnight = new Knight(this.white, this.col, this.row);
+        return newKnight;
+    }
+    
 }

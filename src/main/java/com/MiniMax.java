@@ -13,6 +13,11 @@ public class MiniMax {
     public Tree getTree () {
         return tree;
     }
+
+    @Override
+    public String toString() {
+        return tree.toString();
+    }
     
     
     

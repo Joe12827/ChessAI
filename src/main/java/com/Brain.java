@@ -25,6 +25,7 @@ public class Brain {
                     if (board.tiles[col][row].isWhite() == board.whitesTurn()) { // If the piece is the color of the turn (white on white's turn)
                         moves = board.tiles[col][row].Moves(board);
                         for (Move move : moves) {
+                            // System.out.println(move);
                             movesTotal.add(move);
                         }
                     }
@@ -35,6 +36,9 @@ public class Brain {
     }
 
     public void findAllMoves(Board board, int depth, Node node) {
+        System.out.println("DEPTH: " + depth);
+        board = board.copyBoard();
+
         if (depth == 0) {
             node = new Node();
             minimax.getTree().setRoot(node);
@@ -49,12 +53,16 @@ public class Brain {
         for (Move move : moves) {
             Board newBoard = board.copyBoard();
             newBoard.makeMove(move);
-            Node newNode = new Node (move, board.totalUtility);
-            ArrayList<Node> nodeMoves = node.getMoves();
+            Node newNode = new Node (move, newBoard.totalUtility);
+            ArrayList<Node> nodeMoves = newNode.getMoves();
             nodeMoves.add(newNode);
             findAllMoves(newBoard, depth, newNode);
         }
         
+    }
+
+    public MiniMax getMinimax() {
+        return minimax;
     }
 
     public Move findNextBestMove (Board board) {
