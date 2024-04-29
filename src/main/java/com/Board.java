@@ -58,8 +58,8 @@ public class Board {
             tiles[0][7] = new Rook(false, 0, 7);
             tiles[1][7] = new Knight(false, 1,7);
             tiles[2][7] = new Bishop(false, 2, 7);
-            tiles[3][7] = new King(false, 3, 7);
-            tiles[4][7] = new Queen(false, 4, 7);
+            tiles[3][7] = new Queen(false, 3, 7);
+            tiles[4][7] = new King(false, 4, 7);
             tiles[5][7] = new Bishop(false, 5, 7);
             tiles[6][7] = new Knight(false, 6, 7);
             tiles[7][7] = new Rook(false, 7, 7);
@@ -95,7 +95,7 @@ public class Board {
     public boolean makeMove(Move move) {
         Piece piece = tiles[move.getStart()[0]][move.getStart()[1]];
 
-        System.out.println("Make Move: " + move);
+        // System.out.println("Make Move: " + move);
         if (state == State.WHITE_TURN && !piece.isWhite()) {
             System.out.println("Not Black's Turn");
             return false;

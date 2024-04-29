@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Brain {
     boolean white;
+    boolean maxPlayer;
     int maxDepth;
     int currentDepth = 0;
 
@@ -12,6 +13,7 @@ public class Brain {
 
     Brain (boolean white, int maxDepth, Board board) {
         this.white = white;
+        maxPlayer = white;
         this.maxDepth = maxDepth;
         minimax = new MiniMax(board);
     }
@@ -36,7 +38,6 @@ public class Brain {
     }
 
     public void findAllMoves(Board board, int depth, Node node) {
-        System.out.println("DEPTH: " + depth);
         board = board.copyBoard();
 
         if (depth == 0) {
