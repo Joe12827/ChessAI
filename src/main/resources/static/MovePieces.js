@@ -43,7 +43,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     })
                     .then(data => {
-                        console.log(data);
+                        console.log("AI MOVE: " + data);
+                        var xStart = data.start[0];
+                        var yStart = data.start[1] + 1;
+                        var xStop = data.stop[0];
+                        var yStop = data.stop[1] + 1;
+
+                        console.log(String.fromCharCode('a'.charCodeAt(0) + xStart) + yStart);
+                        console.log(String.fromCharCode('a'.charCodeAt(0) + xStop) + yStop);
+
+
+                        const startSquare = document.getElementById(String.fromCharCode('a'.charCodeAt(0) + xStart) + yStart);
+                        const stopSquare = document.getElementById(String.fromCharCode('a'.charCodeAt(0) + xStop) + yStop);
+
+                        const draggedPiece = startSquare.querySelector('.chess-board td img');
+                        const existingPiece = stopSquare.querySelector('.chess-board td img');
+                        if (existingPiece) {
+                            existingPiece.remove(); // Remove the existing piece image
+                        }
+                        stopSquare.appendChild(draggedPiece);
+                        
+
                     })
                     
 

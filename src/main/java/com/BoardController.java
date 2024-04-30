@@ -34,8 +34,7 @@ public class BoardController {
 
     @GetMapping("/getaimove")
     public Move getAIMove() {
-        return new Move(5, 5, 5, 5);
-        // return boardService.getAIMove();
+        return boardService.getAIMove();
     }
     
 }

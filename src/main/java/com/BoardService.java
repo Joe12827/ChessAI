@@ -19,8 +19,11 @@ public class BoardService {
 
     public Move getAIMove() {
         System.out.println("Thinking. . .");
-        brain.findAllMoves(board, 0, null);
-        System.out.println("Done Thinking");
-        return brain.findNextBestMove(board);
+        Move aimove = new Move(0, 6, 0, 4);
+        board.makeMove(aimove);
+        return aimove;
+        // brain.findAllMoves(board, 0, null);
+        // System.out.println("Done Thinking");
+        // return brain.findNextBestMove(board);
     }
 }
