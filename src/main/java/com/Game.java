@@ -14,7 +14,7 @@ public class Game {
     }
 
     Game(Player whitePlayer, Player blackPlayer) {
-        board = new Board();
+        board = new Board(false);
         this.whitePlayer = whitePlayer;
         this.blackPlayer = blackPlayer;
     }

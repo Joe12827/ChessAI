@@ -32,6 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         existingPiece.remove(); // Remove the existing piece image
                     }
                     square.appendChild(draggedPiece);
+
+
+                    fetch('/api/board/getaimove')
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Failed to fetch board state');
+                        }
+                    })
+                    .then(data => {
+                        console.log(data);
+                    })
+                    
+
+
+
                 }
             })
             .catch(error => console.error('Error executing move:', error));

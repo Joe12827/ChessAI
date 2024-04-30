@@ -14,9 +14,13 @@ public class BoardService {
 
     public boolean makeMove(MoveJSON json) {
         Move move = new Move(json);
-        boolean response = board.makeMove(move); // Execute the specified move on the board
+        return board.makeMove(move); // Execute the specified move on the board
+    }
+
+    public Move getAIMove() {
+        System.out.println("Thinking. . .");
         brain.findAllMoves(board, 0, null);
-        System.out.println("Done");
-        return response;
+        System.out.println("Done Thinking");
+        return brain.findNextBestMove(board);
     }
 }
