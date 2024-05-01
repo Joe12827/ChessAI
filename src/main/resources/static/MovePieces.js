@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) {
                     console.log('Move Executed Successfully');
                     const existingPiece = square.querySelector('.chess-board td img');
+
                     if (existingPiece) {
                         existingPiece.remove(); // Remove the existing piece image
                     }
@@ -62,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             existingPiece.remove(); // Remove the existing piece image
                         }
                         stopSquare.appendChild(draggedPiece);
+                        
+
                     })
                     
 

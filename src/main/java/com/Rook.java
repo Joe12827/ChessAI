@@ -2,17 +2,32 @@ package com;
 import java.util.ArrayList;
 
 public class Rook extends Piece {
+    public boolean castleable = true;
 
     Rook(boolean white, int col, int row) {
         super(white, col, row, 5);
+    }
+
+    Rook(boolean white, int col, int row, boolean castable) {
+        super(white, col, row, 5);
+        this.castleable = castable;
     }
 
     @Override
     public String toString() {
         return "R";
     }
-    
 
+    @Override
+    public void setLocation(int col, int row) {
+        super.setLocation(col, row);
+        castleable = false;
+    }
+
+    public boolean castleable () {
+        return castleable;
+    }
+    
     @Override
     public ArrayList<Move> Moves(Board board) {
         ArrayList<Move> moves = new ArrayList<Move>();

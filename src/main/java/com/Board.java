@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Board {
     Piece[][] tiles = new Piece[8][8];
+    ArrayList<Piece> pieces = new ArrayList<>();
     int whiteUtility = 39;
     int blackUtility = 39;
     int totalUtility = whiteUtility - blackUtility;
@@ -21,10 +22,11 @@ public class Board {
         return (state == State.WHITE_TURN);
     }
 
+    public Piece[][] getTiles() {
+        return tiles;
+    }
+
     Board(boolean empty) {
-        tiles = new Piece[8][8];
-
-
         if (!empty) {
             // WHITE
             tiles[0][1] = new Pawn(true, 0, 1);
@@ -63,10 +65,17 @@ public class Board {
             tiles[5][7] = new Bishop(false, 5, 7);
             tiles[6][7] = new Knight(false, 6, 7);
             tiles[7][7] = new Rook(false, 7, 7);
+
+            for (int row = 7; row >= 0; row--) {
+                for (int col = 0; col < 8; col++) {
+                    if (tiles[col][row] != null) {
+                        pieces.add(tiles[col][row]);
+                    }
+                }
+            }
         }
+        
     }
-
-
 
     public boolean isWhite(int col, int row) {
         return tiles[col][row].isWhite();
@@ -78,6 +87,13 @@ public class Board {
 
     public Board copyBoard () {
         Board boardCopy = new Board(true);
+
+        // for (Piece piece : pieces) {
+        //     Piece newPiece = piece.copyPiece();
+        //     boardCopy.tiles[piece.col][piece.row] = newPiece;
+        //     boardCopy.pieces.add(newPiece);
+        // }
+
         for (int row = 7; row >= 0; row--) {
             for (int col = 0; col < 8; col++) {
                 if (this.tiles[col][row] != null) {
@@ -85,10 +101,11 @@ public class Board {
                 }
             }
         }
+
         boardCopy.state = state;
         boardCopy.whiteUtility = whiteUtility;
         boardCopy.blackUtility = blackUtility;
-        boardCopy.totalUtility = whiteUtility - blackUtility;
+        boardCopy.totalUtility = totalUtility;
         return boardCopy;
     }
 
@@ -116,6 +133,56 @@ public class Board {
             return false;
         }
 
+        // IF Castle
+        if (piece instanceof King) {
+            int newKingX = 0;
+            int newKingY = 0;
+            int newRookX = 0;
+            int newRookY = 0;
+            boolean castle = false;
+            if (move == new Move(4, 0, 7, 0)) { // Right White Castle
+                newKingX = 6;
+                newKingY = 0;
+                newRookX = 5;
+                newRookY = 0;
+                castle = true;
+            } else if (move == new Move(4, 0, 0, 0)) { // Left White Castle
+                newKingX = 2;
+                newKingY = 0;
+                newRookX = 3;
+                newRookY = 0;
+                castle = true;
+            } else if (move == new Move(4, 7, 7, 7)) { // Right Black Castle
+                newKingX = 6;
+                newKingY = 7;
+                newRookX = 5;
+                newRookY = 7;
+                castle = true;
+            } else if (move == new Move(4, 7, 0, 7)) { // Left Black Castle
+                newKingX = 2;
+                newKingY = 7;
+                newRookX = 3;
+                newRookY = 7;
+                castle = true;
+            }
+
+            if (castle) {
+                tiles[newRookX][newRookY] = tiles[move.getStop()[0]][move.getStop()[1]];
+                tiles[newRookX][newRookY].setLocation(newRookX, newRookY);
+                tiles[newKingX][newKingY] = piece;
+                piece.setLocation(newKingX, newKingY);
+
+                if (state == State.WHITE_TURN) {
+                    state = State.BLACK_TURN;
+                } else {
+                    state = State.WHITE_TURN;
+                }
+                return true;
+            }
+
+            
+        }
+
         if (tiles[move.getStop()[0]][move.getStop()[1]] != null) {
             int value = tiles[move.getStop()[0]][move.getStop()[1]].getValue();
             if (tiles[move.getStop()[0]][move.getStop()[1]].isWhite()) {
@@ -124,7 +191,7 @@ public class Board {
                 blackUtility -= value;
             }
             totalUtility = whiteUtility - blackUtility;
-            if (tiles[move.getStop()[0]][move.getStop()[1]].value == 100) {
+            if (tiles[move.getStop()[0]][move.getStop()[1]] instanceof King) {
                 if (state == State.WHITE_TURN) {
                     state = State.WHITE_WINNER;
                 } else {
@@ -145,6 +212,90 @@ public class Board {
         }
 
         // System.out.println(this);
+        return true;
+    }
+
+    public boolean makeFastMove(Move move) { // Make a move assuming its already valid
+        Piece piece = tiles[move.getStart()[0]][move.getStart()[1]];
+
+        // IF Castle
+        if (piece instanceof King) {
+            int newKingX = 0;
+            int newKingY = 0;
+            int newRookX = 0;
+            int newRookY = 0;
+            boolean castle = false;
+            if (move == new Move(4, 0, 7, 0)) { // Right White Castle
+                newKingX = 6;
+                newKingY = 0;
+                newRookX = 5;
+                newRookY = 0;
+                castle = true;
+            } else if (move == new Move(4, 0, 0, 0)) { // Left White Castle
+                newKingX = 2;
+                newKingY = 0;
+                newRookX = 3;
+                newRookY = 0;
+                castle = true;
+            } else if (move == new Move(4, 7, 7, 7)) { // Right Black Castle
+                newKingX = 6;
+                newKingY = 7;
+                newRookX = 5;
+                newRookY = 7;
+                castle = true;
+            } else if (move == new Move(4, 7, 0, 7)) { // Left Black Castle
+                newKingX = 2;
+                newKingY = 7;
+                newRookX = 3;
+                newRookY = 7;
+                castle = true;
+            }
+
+            if (castle) {
+                tiles[newRookX][newRookY] = tiles[move.getStop()[0]][move.getStop()[1]];
+                tiles[newRookX][newRookY].setLocation(newRookX, newRookY);
+                tiles[newKingX][newKingY] = piece;
+                piece.setLocation(newKingX, newKingY);
+
+                if (state == State.WHITE_TURN) {
+                    state = State.BLACK_TURN;
+                } else {
+                    state = State.WHITE_TURN;
+                }
+                return true;
+            }
+        }
+
+
+        Piece stopPiece = tiles[move.getStop()[0]][move.getStop()[1]];
+        if (stopPiece != null) {
+            int value = stopPiece.getValue();
+            if (stopPiece.isWhite()) {
+                whiteUtility -= value;
+            } else {
+                blackUtility -= value;
+            }
+            totalUtility = whiteUtility - blackUtility;
+            stopPiece.kill();
+            if (value == 100) {
+                if (state == State.WHITE_TURN) {
+                    state = State.WHITE_WINNER;
+                } else {
+                    state = State.BLACK_WINNER;
+                }
+            }
+        }
+
+        tiles[move.getStop()[0]][move.getStop()[1]] = piece;
+        tiles[move.getStart()[0]][move.getStart()[1]] = null;
+        piece.setLocation(move.getStop()[0], move.getStop()[1]);
+
+        if (state == State.WHITE_TURN) {
+            state = State.BLACK_TURN;
+        } else {
+            state = State.WHITE_TURN;
+        }
+
         return true;
     }
 

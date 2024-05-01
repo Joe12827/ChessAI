@@ -44,7 +44,7 @@ public class Brain {
         if (depth == 0) {
             node = new Node();
             minimax.getTree().setRoot(node);
-            System.out.println("Set root to " + node);
+            // System.out.println("Set root to " + node);
         }
 
         if (depth > maxDepth) {
@@ -56,7 +56,7 @@ public class Brain {
         // System.out.println(moves);
         for (Move move : moves) {
             Board newBoard = board.copyBoard();
-            newBoard.makeMove(move);
+            newBoard.makeFastMove(move);
             Node newNode = new Node (move, newBoard.totalUtility, newBoard.whitesTurn());
             node.addMove(newNode);
             findAllMoves(newBoard, depth, newNode);
@@ -68,7 +68,7 @@ public class Brain {
         return minimax;
     }
 
-    public void calculateMinimax (Node node) { // The most complex function of brain.java
+    public void calculateMinimax (Node node) {
         if (node == null) {
             return;
         }
@@ -118,7 +118,7 @@ public class Brain {
                 bestMove = node.getMove();
             }
         }
-        System.out.println("MOVE: " + bestMove);
+        // System.out.println("MOVE: " + bestMove);
 
         return bestMove;
     }

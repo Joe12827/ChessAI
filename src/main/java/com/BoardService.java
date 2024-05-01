@@ -21,8 +21,11 @@ public class BoardService {
 
     public Move getAIMove() {
         System.out.println("Thinking. . .");
+        long start = System.currentTimeMillis();
         Move aiMove = brain.findNextBestMove(board);
-        System.out.println("Done Thinking.");
+        long end = System.currentTimeMillis();
+        long time = end - start;
+        System.out.println("Done Thinking: " + time);
         board.makeMove(aiMove);
         return aiMove;
         // brain.findAllMoves(board, 0, null);

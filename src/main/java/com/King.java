@@ -2,21 +2,27 @@ package com;
 import java.util.ArrayList;
 
 public class King extends Piece {
-    public boolean castlingDone = false;
-    int[][] possibleMoves = {{-1, 1},{0, 1},{1, 1},{-1, 0},{1, 0},{-1, -1},{0, -1},{-1, -1}};
+    public boolean castleable = true;
+    public static int[][] possibleMoves = {{-1, 1},{0, 1},{1, 1},{-1, 0},{1, 0},{-1, -1},{0, -1},{-1, -1}};
 
     King(boolean white, int col, int row) {
         super(white, col, row, 100);
     }
 
-    King(boolean white, int col, int row, boolean castlingDone) {
+    King(boolean white, int col, int row, boolean castable) {
         super(white, col, row, 100);
-        this.castlingDone = castlingDone;
+        this.castleable = castable;
     }
 
     @Override
     public String toString() {
         return "X";
+    }
+
+    @Override
+    public void setLocation(int col, int row) {
+        super.setLocation(col, row);
+        castleable = false;
     }
 
 
@@ -34,15 +40,36 @@ public class King extends Piece {
                     Move move = new Move(col, row, col + setMove[0], row + setMove[1]);
                     moves.add(move);
                 }
+            }    
+        }
+
+        // Check Castle
+        if (castleable) {
+            // Right Castle
+            if (!board.isEmpty(col + 3, row) && board.isEmpty(col + 1, row) && board.isEmpty(col + 2, row)) {
+                if (board.getTiles()[col + 3][row] instanceof Rook) {
+                    if (((Rook) board.getTiles()[col + 3][row]).castleable()) {
+                        Move move = new Move(col, row, col + 3, row);
+                        moves.add(move);
+                    }
+                }
             }
-                
+            // Left Castle
+            if (!board.isEmpty(col - 4, row) && board.isEmpty(col - 1, row) && board.isEmpty(col - 2, row) && board.isEmpty(col - 3, row)) {
+                if (board.getTiles()[col - 4][row] instanceof Rook) {
+                    if (((Rook) board.getTiles()[col - 4][row]).castleable()) {
+                        Move move = new Move(col, row, col - 4, row);
+                        moves.add(move);
+                    }
+                }
+            }
         }
         return moves;
     }
 
     @Override
     public Piece copyPiece() {
-        King newKing = new King(this.white, this.col, this.row, this.castlingDone);
+        King newKing = new King(this.white, this.col, this.row, this.castleable);
         return newKing;
     }
 
