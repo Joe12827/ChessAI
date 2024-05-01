@@ -62,8 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             existingPiece.remove(); // Remove the existing piece image
                         }
                         stopSquare.appendChild(draggedPiece);
-                        
-
                     })
                     
 

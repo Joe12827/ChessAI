@@ -30,6 +30,8 @@ public class Move {
         stop = new int[]{xStop, yStop};
     }
 
+    
+
     public int[] getStart() {
         return start;
     }

@@ -1,5 +1,7 @@
 package com;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,9 +21,10 @@ public class BoardService {
 
     public Move getAIMove() {
         System.out.println("Thinking. . .");
-        Move aimove = new Move(0, 6, 0, 4);
-        board.makeMove(aimove);
-        return aimove;
+        Move aiMove = brain.findNextBestMove(board);
+        System.out.println("Done Thinking.");
+        board.makeMove(aiMove);
+        return aiMove;
         // brain.findAllMoves(board, 0, null);
         // System.out.println("Done Thinking");
         // return brain.findNextBestMove(board);
