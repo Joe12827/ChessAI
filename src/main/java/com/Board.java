@@ -9,6 +9,7 @@ public class Board {
     int blackUtility = 39;
     int totalUtility = whiteUtility - blackUtility;
     State state = State.WHITE_TURN;
+    ArrayList<Object[]> moveHistory = new ArrayList<>();
 
     enum State {
         WHITE_TURN,
@@ -83,6 +84,10 @@ public class Board {
 
     public boolean isEmpty(int col, int row) {
         return tiles[col][row] == null;
+    }
+
+    public ArrayList<Piece> getPieces () {
+        return pieces;
     }
 
     public Board copyBoard () {
@@ -179,8 +184,6 @@ public class Board {
                 }
                 return true;
             }
-
-            
         }
 
         if (tiles[move.getStop()[0]][move.getStop()[1]] != null) {
@@ -219,7 +222,7 @@ public class Board {
         Piece piece = tiles[move.getStart()[0]][move.getStart()[1]];
 
         // IF Castle
-        if (piece instanceof King) {
+        if (piece instanceof King && false) {
             int newKingX = 0;
             int newKingY = 0;
             int newRookX = 0;
@@ -268,6 +271,7 @@ public class Board {
 
 
         Piece stopPiece = tiles[move.getStop()[0]][move.getStop()[1]];
+        moveHistory.add(new Object[]{move, stopPiece});
         if (stopPiece != null) {
             int value = stopPiece.getValue();
             if (stopPiece.isWhite()) {
@@ -297,6 +301,35 @@ public class Board {
         }
 
         return true;
+    }
+
+
+    public void reverseMove () {
+        if (moveHistory.size() == 0) {
+            System.out.println("No last move");
+            return;
+        }
+        Move lastMove = (Move)moveHistory.getLast()[0];
+        Piece stopPiece = (Piece)moveHistory.getLast()[1];
+        tiles[lastMove.getStart()[0]][lastMove.getStart()[1]] = tiles[lastMove.getStop()[0]][lastMove.getStop()[1]];
+        tiles[lastMove.getStart()[0]][lastMove.getStart()[1]].setLocation(lastMove.getStart()[0], lastMove.getStart()[1]);
+        tiles[lastMove.getStop()[0]][lastMove.getStop()[1]] = stopPiece;
+        if (stopPiece != null) {
+            stopPiece.setLocation(lastMove.getStop()[0], lastMove.getStop()[1]);
+            if (stopPiece.isWhite()) {
+                whiteUtility += stopPiece.value;
+            } else {
+                blackUtility += stopPiece.value;
+            }
+        }
+
+        if (state == State.WHITE_TURN) {
+            state = State.BLACK_TURN;
+        } else {
+            state = State.WHITE_TURN;
+        }
+
+        moveHistory.removeLast();
     }
 
     @Override

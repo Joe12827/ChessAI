@@ -23,8 +23,13 @@ public class BoardController {
     }
 
     @PostMapping("/move")
-    public boolean makeMove(@RequestBody MoveJSON json) {
-        return boardService.makeMove(json); // Execute the specified move;
+    public ResponseEntity<String> makeMove(@RequestBody MoveJSON json) {
+        boolean response = boardService.makeMove(json); // Execute the specified move
+        if (response) {
+            return ResponseEntity.ok("Move executed successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid Move");
+        }
     }
 
     @GetMapping("/getaimove")

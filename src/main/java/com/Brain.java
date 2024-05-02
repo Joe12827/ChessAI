@@ -2,11 +2,15 @@ package com;
 
 import java.util.ArrayList;
 
+import com.Board.State;
+
 public class Brain {
     boolean white;
     boolean maxPlayer;
     int maxDepth;
     int currentDepth = 0;
+    int current = 0;
+    int total = 0;
 
 
     MiniMax minimax;
@@ -21,6 +25,18 @@ public class Brain {
     public ArrayList<Move> findCurrentMoves(Board board) {
         ArrayList<Move> movesTotal = new ArrayList<>();
         ArrayList<Move> moves = new ArrayList<>();
+        boolean whitesTurn = board.whitesTurn();
+
+        // ArrayList<Piece> pieces = board.getPieces();
+        // for (Piece piece : pieces) {
+        //     if (piece.isWhite() == whitesTurn) {
+        //         moves = piece.Moves(board);
+        //         for (Move move : moves) {
+        //             movesTotal.add(move);
+        //         }
+        //     }
+        // }
+
         for (int row = 7; row >= 0; row--) {
             for (int col = 0; col < 8; col++) {
                 if (!board.isEmpty(col, row)) {
@@ -34,17 +50,22 @@ public class Brain {
                 }
             }
         }
+
         return movesTotal;
     }
 
     public void findAllMoves(Board board, int depth, Node node) {
-        board = board.copyBoard();
         // System.out.println("DEPTH: " + depth);
-
+        // System.out.println(board);
         if (depth == 0) {
             node = new Node();
             minimax.getTree().setRoot(node);
+            board = board.copyBoard();
             // System.out.println("Set root to " + node);
+        }
+
+        if (board.state == State.BLACK_WINNER || board.state == State.WHITE_WINNER) {
+            return;
         }
 
         if (depth > maxDepth) {
@@ -52,14 +73,34 @@ public class Brain {
         }
 
         ArrayList<Move> moves = findCurrentMoves(board);
+
+        if (depth == 0) {
+            if (total == 0) {
+                total = moves.size();
+            }
+        }
+        
+        if (depth == 1) {
+            current++;
+            System.out.println("Searched: " + current + "/" + total);
+        }
+
+
         depth++;
         // System.out.println(moves);
         for (Move move : moves) {
-            Board newBoard = board.copyBoard();
-            newBoard.makeFastMove(move);
-            Node newNode = new Node (move, newBoard.totalUtility, newBoard.whitesTurn());
+            // Board newBoard = board.copyBoard();
+            // newBoard.makeFastMove(move);
+            // Node newNode = new Node (move, newBoard.totalUtility, newBoard.whitesTurn());
+            // node.addMove(newNode);
+            // findAllMoves(newBoard, depth, newNode);
+
+
+            board.makeFastMove(move);
+            Node newNode = new Node (move, board.totalUtility, board.whitesTurn());
             node.addMove(newNode);
-            findAllMoves(newBoard, depth, newNode);
+            findAllMoves(board, depth, newNode);
+            board.reverseMove();
         }
 
     }
@@ -102,6 +143,9 @@ public class Brain {
 
     public Move findNextBestMove (Board board) {
         findAllMoves(board, 0, null);
+        current = 0;
+        total = 0;
+        System.out.println("Found all moves. Calculating minimax tree.");
         calculateMinimax(minimax.getTree().getRoot());
         int bestValue = 0;
         Move bestMove = null;

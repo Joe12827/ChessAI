@@ -37,14 +37,16 @@ public class Pawn extends Piece {
         if (inBounds(col, row + forward) && board.isEmpty(col, row + forward)) {
             Move move = new Move(col, row, col, row + forward);
             moves.add(move);
+
+            if ((white && row == 1) || (!white && row == 6)) {
+                if (inBounds(col, row + (forward * 2)) && board.isEmpty(col, row + (forward * 2))) {
+                    move = new Move(col, row, col, row + (2 * forward));
+                    moves.add(move);
+                }
+            }
+
         }
 
-        if (inBounds(col, row + (forward * 2)) && board.isEmpty(col, row + forward) && board.isEmpty(col, row + (forward * 2))) {
-            if ((white && row == 1) || (!white && row == 6)) {
-                Move move = new Move(col, row, col, row + (2 * forward));
-                moves.add(move);
-            }
-        }
         return moves;
     }
 
