@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class BoardService {
 
     private Board board = new Board(false); // Instantiate the Board
-    private Brain brain = new Brain(false, 3, board);
+    private Brain brain = new Brain(false, 8, board); // Depth MAX: 7
 
     public String getBoardState() {
         return board.toString(); // Get current board state as a string

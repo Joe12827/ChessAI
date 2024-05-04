@@ -59,6 +59,12 @@ public class Node {
 
     @Override
     public String toString() {
-        return "TREE>>>";
+        String str = "[ ";
+        for (Node node : moves) {
+            str += node.move;
+            str += "(" + node.minimaxValue + ") | ";
+        }
+        str += " ]";
+        return str;
     }
 }

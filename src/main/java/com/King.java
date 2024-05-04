@@ -43,27 +43,27 @@ public class King extends Piece {
             }    
         }
 
-        // Check Castle
-        if (castleable) {
-            // Right Castle
-            if (!board.isEmpty(col + 3, row) && board.isEmpty(col + 1, row) && board.isEmpty(col + 2, row)) {
-                if (board.getTiles()[col + 3][row] instanceof Rook) {
-                    if (((Rook) board.getTiles()[col + 3][row]).castleable()) {
-                        Move move = new Move(col, row, col + 3, row);
-                        moves.add(move);
-                    }
-                }
-            }
-            // Left Castle
-            if (!board.isEmpty(col - 4, row) && board.isEmpty(col - 1, row) && board.isEmpty(col - 2, row) && board.isEmpty(col - 3, row)) {
-                if (board.getTiles()[col - 4][row] instanceof Rook) {
-                    if (((Rook) board.getTiles()[col - 4][row]).castleable()) {
-                        Move move = new Move(col, row, col - 4, row);
-                        moves.add(move);
-                    }
-                }
-            }
-        }
+        // // Check Castle
+        // if (castleable) {
+        //     // Right Castle
+        //     if (!board.isEmpty(col + 3, row) && board.isEmpty(col + 1, row) && board.isEmpty(col + 2, row)) {
+        //         if (board.getTiles()[col + 3][row] instanceof Rook) {
+        //             if (((Rook) board.getTiles()[col + 3][row]).castleable()) {
+        //                 Move move = new Move(col, row, col + 3, row);
+        //                 moves.add(move);
+        //             }
+        //         }
+        //     }
+        //     // Left Castle
+        //     if (!board.isEmpty(col - 4, row) && board.isEmpty(col - 1, row) && board.isEmpty(col - 2, row) && board.isEmpty(col - 3, row)) {
+        //         if (board.getTiles()[col - 4][row] instanceof Rook) {
+        //             if (((Rook) board.getTiles()[col - 4][row]).castleable()) {
+        //                 Move move = new Move(col, row, col - 4, row);
+        //                 moves.add(move);
+        //             }
+        //         }
+        //     }
+        // }
         return moves;
     }
 

@@ -59,7 +59,7 @@ public class Brain {
         // System.out.println(board);
         if (depth == 0) {
             node = new Node();
-            minimax.getTree().setRoot(node);
+            minimax.setRoot(node);
             board = board.copyBoard();
             // System.out.println("Set root to " + node);
         }
@@ -68,7 +68,7 @@ public class Brain {
             return;
         }
 
-        if (depth > maxDepth) {
+        if (depth == maxDepth) {
             return;
         }
 
@@ -82,8 +82,12 @@ public class Brain {
         
         if (depth == 1) {
             current++;
-            System.out.println("Searched: " + current + "/" + total);
+            // System.out.println("Searched: " + current + "/" + total);
         }
+
+        // if (depth == 2) {
+        //     System.out.println(".");
+        // }
 
 
         depth++;
@@ -97,9 +101,12 @@ public class Brain {
 
 
             board.makeFastMove(move);
+            // System.out.println(board);
             Node newNode = new Node (move, board.totalUtility, board.whitesTurn());
             node.addMove(newNode);
-            findAllMoves(board, depth, newNode);
+            if (!(board.state == State.WHITE_WINNER) && !(board.state == State.BLACK_WINNER)) {
+                findAllMoves(board, depth, newNode);
+            }
             board.reverseMove();
         }
 
@@ -109,49 +116,86 @@ public class Brain {
         return minimax;
     }
 
-    public void calculateMinimax (Node node) {
-        if (node == null) {
-            return;
+    public int calculateMinimax (Board board, Node node, int depth, int alpha, int beta) {
+        // If node is a leaf node (no children), assign its utility as its Minimax value
+
+        if (depth == 0) {
+            node = new Node(null, board.totalUtility, board.whitesTurn());
+            minimax.setRoot(node);
+            board = board.copyBoard();
+            // System.out.println("ROOT");
         }
 
-        // If node is a leaf node (no children), assign its utility as its Minimax value
-        if (!node.hasMoves()) {
-            node.setMinimaxValue(node.getTotalUtility());
-            // System.out.println("END VAL: " + node.getTotalUtility());
-            return;
+        // System.out.println(board.state);
+
+        if (board.state == State.WHITE_WINNER || board.state == State.BLACK_WINNER) {
+            node.setMinimaxValue(node.totalUtility - (maxDepth - depth));
+            // System.out.println("H");
+            return board.totalUtility - (maxDepth - depth);
         }
+
+        if (depth == maxDepth) {
+            // System.out.println("End Utility: " + node.totalUtility);
+            node.setMinimaxValue(node.totalUtility);
+            return node.totalUtility;
+        }
+
+        ArrayList<Move> moves = findCurrentMoves(board);
 
         // Recursively calculate Minimax values for child nodes
         if (node.isMaxPlayer()) {
             // If node is a Max player, find the maximum Minimax value among its children
             int maxMinimaxValue = Integer.MIN_VALUE;
-            for (Node child : node.getMoves()) {
-                calculateMinimax(child);
-                maxMinimaxValue = Math.max(maxMinimaxValue, child.getMinimaxValue());
+            for (Move move : moves) {
+                board.makeFastMove(move);
+                Node newNode = new Node(move, board.totalUtility, board.whitesTurn());
+                node.addMove(newNode);
+
+                int value = calculateMinimax(board, newNode, depth + 1, alpha, beta);
+                board.reverseMove();
+                maxMinimaxValue = Math.max(maxMinimaxValue, value);
+                alpha = Math.max(alpha, maxMinimaxValue);
+                // node.setMinimaxValue(value);
+                if (beta <= alpha) { // PRUNE!!!!
+                    break;
+                }
+                // node.setMinimaxValue(value);
             }
             node.setMinimaxValue(maxMinimaxValue);
+            return maxMinimaxValue;
+
         } else {
             // If node is a Min player, find the minimum Minimax value among its children
             int minMinimaxValue = Integer.MAX_VALUE;
-            for (Node child : node.getMoves()) {
-                calculateMinimax(child);
-                minMinimaxValue = Math.min(minMinimaxValue, child.getMinimaxValue());
+            for (Move move : moves) {
+                board.makeFastMove(move);
+                Node newNode = new Node (move, board.totalUtility, board.whitesTurn());
+                node.addMove(newNode);
+
+                int value = calculateMinimax(board, newNode, depth + 1, alpha, beta);
+                board.reverseMove();
+                minMinimaxValue = Math.min(minMinimaxValue, value);
+                beta  = Math.min(beta, minMinimaxValue);
+                // node.setMinimaxValue(value);
+                if (beta <= alpha) { // PRUNE!!!!
+                    break;
+                }
+                // node.setMinimaxValue(value);
+                // node.setMinimaxValue(value);
             }
             node.setMinimaxValue(minMinimaxValue);
+            return minMinimaxValue;     
         }
     }
 
     public Move findNextBestMove (Board board) {
-        findAllMoves(board, 0, null);
-        current = 0;
-        total = 0;
-        System.out.println("Found all moves. Calculating minimax tree.");
-        calculateMinimax(minimax.getTree().getRoot());
+        // System.out.println(board);
+        calculateMinimax(board, null, 0, -1000, 1000);
         int bestValue = 0;
         Move bestMove = null;
         boolean first = true;
 
-        for (Node node : minimax.getTree().getRoot().getMoves()) {
+        for (Node node : minimax.getRoot().getMoves()) {
             // System.out.println(node.getMinimaxValue());
             if (first) {
                 first = false;
@@ -162,7 +206,7 @@ public class Brain {
                 bestMove = node.getMove();
             }
         }
-        // System.out.println("MOVE: " + bestMove);
+        System.out.println("MOVE: " + bestMove + ": " + bestValue);
 
         return bestMove;
     }

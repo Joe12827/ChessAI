@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Board {
     Piece[][] tiles = new Piece[8][8];
     ArrayList<Piece> pieces = new ArrayList<>();
-    int whiteUtility = 39;
-    int blackUtility = 39;
+    int whiteUtility = 139;
+    int blackUtility = 139;
     int totalUtility = whiteUtility - blackUtility;
     State state = State.WHITE_TURN;
     ArrayList<Object[]> moveHistory = new ArrayList<>();
@@ -279,15 +279,17 @@ public class Board {
             } else {
                 blackUtility -= value;
             }
-            totalUtility = whiteUtility - blackUtility;
+
             stopPiece.kill();
             if (value == 100) {
+                // System.out.println("WINNER");
                 if (state == State.WHITE_TURN) {
                     state = State.WHITE_WINNER;
                 } else {
                     state = State.BLACK_WINNER;
                 }
             }
+            totalUtility = whiteUtility - blackUtility;
         }
 
         tiles[move.getStop()[0]][move.getStop()[1]] = piece;
@@ -296,7 +298,7 @@ public class Board {
 
         if (state == State.WHITE_TURN) {
             state = State.BLACK_TURN;
-        } else {
+        } else if (state == State.BLACK_TURN) {
             state = State.WHITE_TURN;
         }
 
@@ -325,8 +327,12 @@ public class Board {
 
         if (state == State.WHITE_TURN) {
             state = State.BLACK_TURN;
-        } else {
+        } else if (state == State.BLACK_TURN)  {
             state = State.WHITE_TURN;
+        } else if (state == State.WHITE_WINNER)  {
+            state = State.WHITE_TURN;
+        } else if (state == State.BLACK_WINNER)  {
+            state = State.BLACK_TURN;
         }
 
         moveHistory.removeLast();

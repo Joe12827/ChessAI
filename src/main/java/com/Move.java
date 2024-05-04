@@ -42,7 +42,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return (start[0] + 1) + "," + (start[1] + 1) + " > " + (stop[0] + 1) + "," + (stop[1] + 1);
+        return (start[0] + 1) + "," + (start[1] + 1) + ">" + (stop[0] + 1) + "," + (stop[1] + 1);
     }
 
     @Override

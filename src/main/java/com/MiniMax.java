@@ -2,21 +2,23 @@ package com;
 
 
 public class MiniMax {
-    Tree tree;
+    Node root;
 
     public MiniMax(Board board) {
-        tree = new Tree();
-        Node root = new Node();
-        tree.setRoot(root);
+        root = new Node();
     }
 
-    public Tree getTree () {
-        return tree;
+    public Node getRoot () {
+        return root;
+    }
+
+    public void setRoot(Node root) {
+        this.root = root;
     }
 
     @Override
     public String toString() {
-        return tree.toString();
+        return root.toString();
     }
     
     
