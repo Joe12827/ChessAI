@@ -1,14 +1,14 @@
 # ChessAI
 Joe Wesnofske
 
-Using a Minimax AI with Alpha Beta Pruning.
-Current Depth: 8
-Goal Depth: 15
-(Running on my laptop)
+Using a Minimax AI with Alpha Beta Pruning. <br />
+Current Depth: 8 <br />
+Goal Depth: 15 <br />
+(Running on my laptop) <br />
 
 TODO:
-Implement Castle On Front End (Done)
-Implement Total Utility as a ratio
-Sort each possible move by strength to enable alpha beta pruning to be most effective
-Have AI Face itself
-Using Ai vs Ai enable learning by editing piece values depending on game result
+Implement Castle On Front End (Done) <br />
+Implement Total Utility as a ratio <br />
+Sort each possible move by strength to enable alpha beta pruning to be most effective <br />
+Have AI Face itself <br />
+Using Ai vs Ai enable learning by editing piece values depending on game result <br />
