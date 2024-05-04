@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const squares = document.querySelectorAll('.chess-board td');
     let startSquareId = null;
     let move = [];
+    const moveSound = new Audio('/Sounds/move-self.mp3');
+    const castleSound = new Audio('/Sounds/castle.mp3');
 
     // Add event listeners to all squares
     squares.forEach(square => {
@@ -89,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
 
                             if (castle) {
-                                console.log("CASTLE!");
+                                castleSound.play();
                                 const newKingSquare = document.getElementById(String.fromCharCode('a'.charCodeAt(0) + newKingX) + newKingY);
                                 const newRookSquare = document.getElementById(String.fromCharCode('a'.charCodeAt(0) + newRookX) + newRookY);
 
@@ -98,12 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
                             } else {
+                                moveSound.play();
                                 if (existingPiece) {
                                     existingPiece.remove(); // Remove the existing piece image
                                 }
                                 stopSquare.appendChild(draggedPiece);
                             }
                         } else {
+                            moveSound.play();
                             if (existingPiece) {
                                 existingPiece.remove(); // Remove the existing piece image
                             }
@@ -115,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     fetch('/api/board/getaimove')
                     .then(response => {
                         if (response.ok) {
+                            moveSound.play();
                             return response.json();
                         } else {
                             throw new Error('Failed to fetch board state');
