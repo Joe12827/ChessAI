@@ -6,8 +6,8 @@ Current Depth: 8 <br />
 Goal Depth: 15 <br />
 (Running on my laptop) <br />
 
-TODO:
-Implement Castle On Front End (Done) <br />
+TODO: <br />
+<s>Implement Castle On Front End</s> <br />
 Implement Total Utility as a ratio <br />
 Sort each possible move by strength to enable alpha beta pruning to be most effective <br />
 Have AI Face itself <br />
