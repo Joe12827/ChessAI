@@ -139,31 +139,31 @@ public class Board {
         }
 
         // IF Castle
-        if (piece instanceof King) {
+        if (piece.name == "King") {
             int newKingX = 0;
             int newKingY = 0;
             int newRookX = 0;
             int newRookY = 0;
             boolean castle = false;
-            if (move == new Move(4, 0, 7, 0)) { // Right White Castle
+            if (move.equals(new Move(4, 0, 7, 0))) { // Right White Castle
                 newKingX = 6;
                 newKingY = 0;
                 newRookX = 5;
                 newRookY = 0;
                 castle = true;
-            } else if (move == new Move(4, 0, 0, 0)) { // Left White Castle
+            } else if (move.equals(new Move(4, 0, 0, 0))) { // Left White Castle
                 newKingX = 2;
                 newKingY = 0;
                 newRookX = 3;
                 newRookY = 0;
                 castle = true;
-            } else if (move == new Move(4, 7, 7, 7)) { // Right Black Castle
+            } else if (move.equals(new Move(4, 7, 7, 7))) { // Right Black Castle
                 newKingX = 6;
                 newKingY = 7;
                 newRookX = 5;
                 newRookY = 7;
                 castle = true;
-            } else if (move == new Move(4, 7, 0, 7)) { // Left Black Castle
+            } else if (move.equals(new Move(4, 7, 0, 7))) { // Left Black Castle
                 newKingX = 2;
                 newKingY = 7;
                 newRookX = 3;
@@ -177,14 +177,22 @@ public class Board {
                 tiles[newKingX][newKingY] = piece;
                 piece.setLocation(newKingX, newKingY);
 
+                tiles[move.getStop()[0]][move.getStop()[1]] = null;
+                tiles[move.getStart()[0]][move.getStart()[1]] = null;
+
                 if (state == State.WHITE_TURN) {
                     state = State.BLACK_TURN;
                 } else {
                     state = State.WHITE_TURN;
                 }
+
+                moveHistory.add(new Object[]{move, tiles[newRookX][newRookY], true});
                 return true;
             }
         }
+
+        Piece stopPiece = tiles[move.getStop()[0]][move.getStop()[1]];
+        moveHistory.add(new Object[]{move, stopPiece, false});
 
         if (tiles[move.getStop()[0]][move.getStop()[1]] != null) {
             int value = tiles[move.getStop()[0]][move.getStop()[1]].getValue();
@@ -220,33 +228,35 @@ public class Board {
 
     public boolean makeFastMove(Move move) { // Make a move assuming its already valid
         Piece piece = tiles[move.getStart()[0]][move.getStart()[1]];
+        // System.out.println("Fast move: " + move);
 
         // IF Castle
-        if (piece instanceof King && false) {
+        if (piece.name == "King") {
+            // System.out.println(move);
             int newKingX = 0;
             int newKingY = 0;
             int newRookX = 0;
             int newRookY = 0;
             boolean castle = false;
-            if (move == new Move(4, 0, 7, 0)) { // Right White Castle
+            if (move.equals(new Move(4, 0, 7, 0))) { // Right White Castle
                 newKingX = 6;
                 newKingY = 0;
                 newRookX = 5;
                 newRookY = 0;
                 castle = true;
-            } else if (move == new Move(4, 0, 0, 0)) { // Left White Castle
+            } else if (move.equals(new Move(4, 0, 0, 0))) { // Left White Castle
                 newKingX = 2;
                 newKingY = 0;
                 newRookX = 3;
                 newRookY = 0;
                 castle = true;
-            } else if (move == new Move(4, 7, 7, 7)) { // Right Black Castle
+            } else if (move.equals(new Move(4, 7, 7, 7))) { // Right Black Castle
                 newKingX = 6;
                 newKingY = 7;
                 newRookX = 5;
                 newRookY = 7;
                 castle = true;
-            } else if (move == new Move(4, 7, 0, 7)) { // Left Black Castle
+            } else if (move.equals(new Move(4, 7, 0, 7))) { // Left Black Castle
                 newKingX = 2;
                 newKingY = 7;
                 newRookX = 3;
@@ -260,18 +270,23 @@ public class Board {
                 tiles[newKingX][newKingY] = piece;
                 piece.setLocation(newKingX, newKingY);
 
+                tiles[move.getStop()[0]][move.getStop()[1]] = null;
+                tiles[move.getStart()[0]][move.getStart()[1]] = null;
+
                 if (state == State.WHITE_TURN) {
                     state = State.BLACK_TURN;
                 } else {
                     state = State.WHITE_TURN;
                 }
+
+                moveHistory.add(new Object[]{move, tiles[newRookX][newRookY], true});
                 return true;
             }
         }
 
 
         Piece stopPiece = tiles[move.getStop()[0]][move.getStop()[1]];
-        moveHistory.add(new Object[]{move, stopPiece});
+        moveHistory.add(new Object[]{move, stopPiece, false});
         if (stopPiece != null) {
             int value = stopPiece.getValue();
             if (stopPiece.isWhite()) {
@@ -302,6 +317,7 @@ public class Board {
             state = State.WHITE_TURN;
         }
 
+        // System.out.println(this);
         return true;
     }
 
@@ -312,7 +328,65 @@ public class Board {
             return;
         }
         Move lastMove = (Move)moveHistory.getLast()[0];
-        Piece stopPiece = (Piece)moveHistory.getLast()[1];
+        Piece stopPiece = (Piece)moveHistory.getLast()[1]; // Piece that was taken
+
+        if ((Boolean)moveHistory.getLast()[2]) {
+            int oldKingX = 0;
+            int oldKingY = 0;
+            int oldRookX = 0;
+            int oldRookY = 0;
+            boolean castle = false;
+            if (lastMove.equals(new Move(4, 0, 7, 0))) { // Right White Castle
+                oldKingX = 6;
+                oldKingY = 0;
+                oldRookX = 5;
+                oldRookY = 0;
+                castle = true;
+            } else if (lastMove.equals(new Move(4, 0, 0, 0))) { // Left White Castle
+                oldKingX = 2;
+                oldKingY = 0;
+                oldRookX = 3;
+                oldRookY = 0;
+                castle = true;
+            } else if (lastMove.equals(new Move(4, 7, 7, 7))) { // Right Black Castle
+                oldKingX = 6;
+                oldKingY = 7;
+                oldRookX = 5;
+                oldRookY = 7;
+                castle = true;
+            } else if (lastMove.equals(new Move(4, 7, 0, 7))) { // Left Black Castle
+                oldKingX = 2;
+                oldKingY = 7;
+                oldRookX = 3;
+                oldRookY = 7;
+                castle = true;
+            }
+
+            if (castle) {
+                System.out.println("REVERSING CASTLE");
+                System.out.println(lastMove);
+                tiles[lastMove.getStart()[0]][lastMove.getStart()[1]] = tiles[oldKingX][oldKingY];
+                tiles[lastMove.getStop()[0]][lastMove.getStop()[1]] = stopPiece;
+                tiles[lastMove.getStart()[0]][lastMove.getStart()[1]].setLocation(lastMove.getStart()[0], lastMove.getStart()[1]);
+                stopPiece.setLocation(lastMove.getStop()[0], lastMove.getStop()[1]);
+
+                tiles[oldKingX][oldKingY] = null;
+                tiles[oldRookX][oldRookY] = null;
+
+                // Due to revsersing castle, set the rook and king to castable again
+                tiles[lastMove.getStart()[0]][lastMove.getStart()[1]].setCastleable();
+                stopPiece.setCastleable();
+
+                if (state == State.WHITE_TURN) {
+                    state = State.BLACK_TURN;
+                } else {
+                    state = State.WHITE_TURN;
+                }
+                moveHistory.removeLast();
+                return;
+            }
+        }
+
         tiles[lastMove.getStart()[0]][lastMove.getStart()[1]] = tiles[lastMove.getStop()[0]][lastMove.getStop()[1]];
         tiles[lastMove.getStart()[0]][lastMove.getStart()[1]].setLocation(lastMove.getStart()[0], lastMove.getStart()[1]);
         tiles[lastMove.getStop()[0]][lastMove.getStop()[1]] = stopPiece;

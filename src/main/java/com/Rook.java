@@ -24,6 +24,11 @@ public class Rook extends Piece {
         castleable = false;
     }
 
+    @Override
+    public void setCastleable() {
+        castleable = true;
+    }
+
     public boolean castleable () {
         return castleable;
     }

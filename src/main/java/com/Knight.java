@@ -37,5 +37,4 @@ public class Knight extends Piece {
         Knight newKnight = new Knight(this.white, this.col, this.row);
         return newKnight;
     }
-    
 }

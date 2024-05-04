@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/board")
@@ -36,5 +38,11 @@ public class BoardController {
     public Move getAIMove() {
         return boardService.getAIMove();
     }
+
+    @GetMapping("/lastmove")
+    public Move getLastMove() {
+        return boardService.getLastMove();
+    }
+    
     
 }

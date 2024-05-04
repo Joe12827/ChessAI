@@ -1,14 +1,12 @@
 package com;
 
-import java.util.ArrayList;
-
 import org.springframework.stereotype.Service;
 
 @Service
 public class BoardService {
 
     private Board board = new Board(false); // Instantiate the Board
-    private Brain brain = new Brain(false, 8, board); // Depth MAX: 7
+    private Brain brain = new Brain(false, 6, board); // Depth MAX: 7
 
     public String getBoardState() {
         return board.toString(); // Get current board state as a string
@@ -31,5 +29,10 @@ public class BoardService {
         // brain.findAllMoves(board, 0, null);
         // System.out.println("Done Thinking");
         // return brain.findNextBestMove(board);
+    }
+
+    public Move getLastMove() {
+        Move lastMove = (Move)board.moveHistory.getLast()[0];
+        return lastMove;
     }
 }

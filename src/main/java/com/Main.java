@@ -4,13 +4,19 @@ import java.util.ArrayList;
 public class Main {
   public static void main(String[] args) {
     Board board = new Board(false);
-    Brain brain = new Brain(false, 9, board);
+    Brain brain = new Brain(false, 3, board);
 
-    // board.makeMove(new Move(4, 1, 4, 3));
-    // board.makeMove(new Move(3, 6, 3, 4));
-    // board.makeMove(new Move(6, 0, 5, 2));
-
-    board.makeMove(new Move(3, 1, 3, 2));
+    board.makeMove(new Move(4, 1, 4, 3));
+    board.makeMove(new Move(3, 6, 3, 4));
+    board.makeMove(new Move(6, 0, 5, 2));
+    board.makeMove(new Move(3, 4, 3, 3));
+    board.makeMove(new Move(5, 0, 4, 1));
+    board.makeMove(new Move(3, 3, 3, 2));
+    board.makeMove(new Move(4, 0, 7, 0)); // CASTLE
+    System.out.println(board);
+    board.reverseMove();
+    System.out.println(board);
+    // board.makeMove(new Move(3, 1, 3, 2));
     // board.makeMove(new Move(4, 6, 4, 5));
     // board.makeMove(new Move(4, 1, 4, 2));
     // board.makeMove(new Move(5, 7, 1, 3));
@@ -25,7 +31,7 @@ public class Main {
     long a = System.currentTimeMillis();
     // brain.calculateMinimax(board, null, 0, -1000, 1000);
     // System.out.println(brain.minimax);
-    brain.findNextBestMove(board);
+    // brain.findNextBestMove(board);
     // System.out.println(board);
     System.out.println(brain.minimax);
     // brain.findAllMoves(board, 0, null);

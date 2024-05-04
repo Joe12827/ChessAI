@@ -7,6 +7,7 @@ public abstract class Piece {
     public int col;
     public int row;
     public int value;
+    public String name = "";
     
     Piece(boolean white, int col, int row, int value) {
         this.white = white;
@@ -38,5 +39,9 @@ public abstract class Piece {
 
     protected int getValue(){
         return this.value;
+    }
+
+    protected void setCastleable() {
+        return;
     };
 }

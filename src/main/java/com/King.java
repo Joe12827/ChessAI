@@ -7,11 +7,13 @@ public class King extends Piece {
 
     King(boolean white, int col, int row) {
         super(white, col, row, 100);
+        name = "King";
     }
 
     King(boolean white, int col, int row, boolean castable) {
         super(white, col, row, 100);
         this.castleable = castable;
+        name = "King";
     }
 
     @Override
@@ -23,6 +25,11 @@ public class King extends Piece {
     public void setLocation(int col, int row) {
         super.setLocation(col, row);
         castleable = false;
+    }
+
+    @Override
+    public void setCastleable() {
+        castleable = true;
     }
 
 
@@ -43,27 +50,27 @@ public class King extends Piece {
             }    
         }
 
-        // // Check Castle
-        // if (castleable) {
-        //     // Right Castle
-        //     if (!board.isEmpty(col + 3, row) && board.isEmpty(col + 1, row) && board.isEmpty(col + 2, row)) {
-        //         if (board.getTiles()[col + 3][row] instanceof Rook) {
-        //             if (((Rook) board.getTiles()[col + 3][row]).castleable()) {
-        //                 Move move = new Move(col, row, col + 3, row);
-        //                 moves.add(move);
-        //             }
-        //         }
-        //     }
-        //     // Left Castle
-        //     if (!board.isEmpty(col - 4, row) && board.isEmpty(col - 1, row) && board.isEmpty(col - 2, row) && board.isEmpty(col - 3, row)) {
-        //         if (board.getTiles()[col - 4][row] instanceof Rook) {
-        //             if (((Rook) board.getTiles()[col - 4][row]).castleable()) {
-        //                 Move move = new Move(col, row, col - 4, row);
-        //                 moves.add(move);
-        //             }
-        //         }
-        //     }
-        // }
+        // Check Castle
+        if (castleable) {
+            // Right Castle
+            if (!board.isEmpty(col + 3, row) && board.isEmpty(col + 2, row) && board.isEmpty(col + 1, row)) {
+                if (board.getTiles()[col + 3][row] instanceof Rook) {
+                    if (((Rook) board.getTiles()[col + 3][row]).castleable()) {
+                        Move move = new Move(col, row, col + 3, row);
+                        moves.add(move);
+                    }
+                }
+            }
+            // Left Castle
+            if (!board.isEmpty(col - 4, row) && board.isEmpty(col - 1, row) && board.isEmpty(col - 2, row) && board.isEmpty(col - 3, row)) {
+                if (board.getTiles()[col - 4][row] instanceof Rook) {
+                    if (((Rook) board.getTiles()[col - 4][row]).castleable()) {
+                        Move move = new Move(col, row, col - 4, row);
+                        moves.add(move);
+                    }
+                }
+            }
+        }
         return moves;
     }
 
