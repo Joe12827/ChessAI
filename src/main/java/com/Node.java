@@ -3,8 +3,8 @@ package com;
 import java.util.ArrayList;
 
 public class Node {
-    int totalUtility;
-    int minimaxValue;
+    double totalUtility;
+    double minimaxValue;
     Move move;
     ArrayList<Node> moves;
     boolean isMaxPlayer;
@@ -22,7 +22,7 @@ public class Node {
         moves.add(node);
     }
 
-    Node(Move move, int totalUtility, boolean isMaxPlayer) {
+    Node(Move move, double totalUtility, boolean isMaxPlayer) {
         this.move = move;
         this.totalUtility = totalUtility;
         this.isMaxPlayer = isMaxPlayer;
@@ -33,11 +33,11 @@ public class Node {
         return move;
     }
 
-    public void setMinimaxValue(int minimaxValue) {
+    public void setMinimaxValue(double minimaxValue) {
         this.minimaxValue = minimaxValue;
     }
 
-    public int getTotalUtility() {
+    public double getTotalUtility() {
         return totalUtility;
     }
 
@@ -53,7 +53,7 @@ public class Node {
         return moves.size() != 0;
     }
 
-    public int getMinimaxValue() {
+    public double getMinimaxValue() {
         return minimaxValue;
     }
 

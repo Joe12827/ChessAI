@@ -7,7 +7,7 @@ public class Board {
     ArrayList<Piece> pieces = new ArrayList<>();
     int whiteUtility = 139;
     int blackUtility = 139;
-    int totalUtility = whiteUtility - blackUtility;
+    double totalUtility = (double)whiteUtility / blackUtility;
     State state = State.WHITE_TURN;
     ArrayList<Object[]> moveHistory = new ArrayList<>();
 
@@ -203,7 +203,7 @@ public class Board {
             } else {
                 blackUtility -= value;
             }
-            totalUtility = whiteUtility - blackUtility;
+            totalUtility = (double)whiteUtility / blackUtility;
             if (tiles[move.getStop()[0]][move.getStop()[1]] instanceof King) {
                 if (state == State.WHITE_TURN) {
                     state = State.WHITE_WINNER;
@@ -306,7 +306,7 @@ public class Board {
                     state = State.BLACK_WINNER;
                 }
             }
-            totalUtility = whiteUtility - blackUtility;
+            totalUtility = (double)whiteUtility / blackUtility;
         }
 
         tiles[move.getStop()[0]][move.getStop()[1]] = piece;
@@ -399,6 +399,7 @@ public class Board {
             } else {
                 blackUtility += stopPiece.value;
             }
+            totalUtility = (double)whiteUtility / blackUtility;
         }
 
         if (state == State.WHITE_TURN) {
@@ -443,6 +444,7 @@ public class Board {
                 } else {
                     str += " Turn: BLACK";
                 }
+                str += "  Ratio: " + totalUtility;
             }
             str += "\n";
         }

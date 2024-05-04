@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Main {
   public static void main(String[] args) {
     Board board = new Board(false);
-    Brain brain = new Brain(false, 8, board);
+    Brain brain = new Brain(false, 7, board);
 
     board.makeMove(new Move(4, 1, 4, 3));
     board.makeMove(new Move(3, 6, 3, 4));
@@ -13,8 +13,9 @@ public class Main {
     board.makeMove(new Move(5, 0, 4, 1));
     board.makeMove(new Move(3, 3, 3, 2));
     board.makeMove(new Move(4, 0, 7, 0)); // CASTLE
-    // board.makeMove(new Move(3, 7, 3, 5));
-    // board.makeMove(new Move(1, 1, 1, 2));
+    board.makeMove(new Move(3, 7, 3, 5));
+    board.makeMove(new Move(1, 1, 1, 2));
+    board.makeMove(new Move(3, 2, 4, 1));
 
     System.out.println(board);
     
@@ -51,13 +52,17 @@ public class Main {
     //   // node.addMove(newNode);
     // }
 
-    Move move = brain.findNextBestMove(board);
+    // Move move = brain.findNextBestMove(board);
 
     long b = System.currentTimeMillis();
     System.out.println(b - a);
 
-    System.out.println(move);
+    // System.out.println(move);
 
+    System.out.println(board.whiteUtility + "/" + board.blackUtility);
+    System.out.println(board.totalUtility);
+
+    // System.out.println(board.whiteUtility / board.blackUtility);
 
     // ArrayList<Move> moves = brain.findCurrentMoves(board);
 

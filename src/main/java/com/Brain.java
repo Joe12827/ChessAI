@@ -56,9 +56,9 @@ public class Brain {
 
     public void orderMoves(ArrayList<Move> moves, Board board) {
         ArrayList<MoveUtility> moveUtilityList = new ArrayList<>();
-        int newUtility;
-        int currentUtility;
-        int utilityChange; // Always positive
+        double newUtility;
+        double currentUtility;
+        double utilityChange; // Always positive
         
         
         for (Move move : moves) {
@@ -148,7 +148,7 @@ public class Brain {
     }
 
 
-    public int calculateMinimax (Board board, Node node, int depth, int alpha, int beta) {
+    public double calculateMinimax (Board board, Node node, int depth, double alpha, double beta) {
         // If node is a leaf node (no children), assign its utility as its Minimax value
         if (depth == 0) {
             node = new Node(null, board.totalUtility, board.whitesTurn());
@@ -160,9 +160,9 @@ public class Brain {
         // System.out.println(board.state);
 
         if (board.state == State.WHITE_WINNER || board.state == State.BLACK_WINNER) {
-            node.setMinimaxValue(node.totalUtility - (maxDepth - depth));
+            node.setMinimaxValue(node.totalUtility);
             // System.out.println("H");
-            return board.totalUtility - (maxDepth - depth);
+            return board.totalUtility;
         }
 
         if (depth == maxDepth) {
@@ -177,13 +177,13 @@ public class Brain {
         // Recursively calculate Minimax values for child nodes
         if (node.isMaxPlayer()) {
             // If node is a Max player, find the maximum Minimax value among its children
-            int maxMinimaxValue = Integer.MIN_VALUE;
+            double maxMinimaxValue = Integer.MIN_VALUE;
             for (Move move : moves) {
                 board.makeFastMove(move);
                 Node newNode = new Node(move, board.totalUtility, board.whitesTurn());
                 node.addMove(newNode);
 
-                int value = calculateMinimax(board, newNode, depth + 1, alpha, beta);
+                double value = calculateMinimax(board, newNode, depth + 1, alpha, beta);
                 board.reverseMove();
                 maxMinimaxValue = Math.max(maxMinimaxValue, value);
                 alpha = Math.max(alpha, maxMinimaxValue);
@@ -198,13 +198,13 @@ public class Brain {
 
         } else {
             // If node is a Min player, find the minimum Minimax value among its children
-            int minMinimaxValue = Integer.MAX_VALUE;
+            double minMinimaxValue = Integer.MAX_VALUE;
             for (Move move : moves) {
                 board.makeFastMove(move);
                 Node newNode = new Node (move, board.totalUtility, board.whitesTurn());
                 node.addMove(newNode);
 
-                int value = calculateMinimax(board, newNode, depth + 1, alpha, beta);
+                double value = calculateMinimax(board, newNode, depth + 1, alpha, beta);
                 board.reverseMove();
                 minMinimaxValue = Math.min(minMinimaxValue, value);
                 beta  = Math.min(beta, minMinimaxValue);
@@ -223,7 +223,7 @@ public class Brain {
     public Move findNextBestMove (Board board) {
         // System.out.println(board);
         calculateMinimax(board, null, 0, -1000, 1000);
-        int bestValue = 0;
+        double bestValue = 0;
         Move bestMove = null;
         boolean first = true;
 
@@ -238,7 +238,7 @@ public class Brain {
                 bestMove = node.getMove();
             }
         }
-        System.out.println("MOVE: " + bestMove + ": " + bestValue);
+        System.out.printf("MOVE: " + bestMove + ": %.3f\n", bestValue);
 
         return bestMove;
     }
