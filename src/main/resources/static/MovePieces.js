@@ -141,10 +141,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         const draggedPiece = startSquare.querySelector('.chess-board td img');
                         const existingPiece = stopSquare.querySelector('.chess-board td img');
-                        if (existingPiece) {
-                            existingPiece.remove(); // Remove the existing piece image
+
+                        if (startSquare.querySelector('.chess-board td img').alt == 'wk' || startSquare.querySelector('.chess-board td img').alt == 'bk') {
+                            console.log("MOVED KING");
+                            console.log(xStart + "," + yStart + " > " + xStop + "," + yStop)
+                            var newKingX = 0;
+                            var newKingY = 0;
+                            var newRookX = 0;
+                            var newRookY = 0;
+                            var castle = false;
+                            if (xStart == 4 && yStart == 1 && xStop == 7 && yStop == 1) { // Right White Castle
+                                newKingX = 6;
+                                newKingY = 1;
+                                newRookX = 5;
+                                newRookY = 1;
+                                castle = true;
+                            } else if (xStart == 4 && yStart == 1 && xStop == 0 && yStop == 1) { // Left White Castle
+                                newKingX = 2;
+                                newKingY = 1;
+                                newRookX = 3;
+                                newRookY = 1;
+                                castle = true;
+                            } else if (xStart == 4 && yStart == 8 && xStop == 7 && yStop == 8) { // Right Black Castle
+                                newKingX = 6;
+                                newKingY = 8;
+                                newRookX = 5;
+                                newRookY = 8;
+                                castle = true;
+                            } else if (xStart == 4 && yStart == 8 && xStop == 0 && yStop == 8) { // Left Black Castle
+                                newKingX = 2;
+                                newKingY = 8;
+                                newRookX = 3;
+                                newRookY = 8;
+                                castle = true;
+                            }
+
+                            if (castle) {
+                                castleSound.play();
+                                const newKingSquare = document.getElementById(String.fromCharCode('a'.charCodeAt(0) + newKingX) + newKingY);
+                                const newRookSquare = document.getElementById(String.fromCharCode('a'.charCodeAt(0) + newRookX) + newRookY);
+
+                                newKingSquare.appendChild(draggedPiece);
+                                newRookSquare.appendChild(existingPiece);
+
+
+                            } else {
+                                moveSound.play();
+                                if (existingPiece) {
+                                    existingPiece.remove(); // Remove the existing piece image
+                                }
+                                stopSquare.appendChild(draggedPiece);
+                            }
+                        } else {
+                            moveSound.play();
+                            if (existingPiece) {
+                                existingPiece.remove(); // Remove the existing piece image
+                            }
+                            stopSquare.appendChild(draggedPiece);
                         }
-                        stopSquare.appendChild(draggedPiece);
                     })
                 }
             })
