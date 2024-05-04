@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class King extends Piece {
     public boolean castleable = true;
-    public static int[][] possibleMoves = {{-1, 1},{0, 1},{1, 1},{-1, 0},{1, 0},{-1, -1},{0, -1},{-1, -1}};
+    public static int[][] possibleMoves = {{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1},{-1, 0}};
 
     King(boolean white, int col, int row) {
         super(white, col, row, 100);
