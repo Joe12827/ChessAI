@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Main {
   public static void main(String[] args) {
     Board board = new Board(false);
-    Brain brain = new Brain(false, 3, board);
+    Brain brain = new Brain(false, 8, board);
 
     board.makeMove(new Move(4, 1, 4, 3));
     board.makeMove(new Move(3, 6, 3, 4));
@@ -13,9 +13,11 @@ public class Main {
     board.makeMove(new Move(5, 0, 4, 1));
     board.makeMove(new Move(3, 3, 3, 2));
     board.makeMove(new Move(4, 0, 7, 0)); // CASTLE
+    // board.makeMove(new Move(3, 7, 3, 5));
+    // board.makeMove(new Move(1, 1, 1, 2));
+
     System.out.println(board);
-    board.reverseMove();
-    System.out.println(board);
+    
     // board.makeMove(new Move(3, 1, 3, 2));
     // board.makeMove(new Move(4, 6, 4, 5));
     // board.makeMove(new Move(4, 1, 4, 2));
@@ -33,13 +35,14 @@ public class Main {
     // System.out.println(brain.minimax);
     // brain.findNextBestMove(board);
     // System.out.println(board);
-    System.out.println(brain.minimax);
+    // brain.findAllMoves(board, 0, null);
     // brain.findAllMoves(board, 0, null);
     // brain.calculateMinimax(brain.getMinimax().getTree().getRoot(), 0, -1000, 1000, brain.white);
     // for (int i = 0; i < 1000000; i++) {
-    //   brain.calculateMinimax(brain.getMinimax().getTree().getRoot(), 0, -1000, 1000, brain.white);
+    //   // brain.calculateMinimax(brain.getMinimax().getTree().getRoot(), 0, -1000, 1000, brain.white);
     //   // piece.Moves(board);
-    //   // brain.findCurrentMoves(board);
+    //   brain.findCurrentMoves(board);
+    //   // Board newBoard = board.copyBoard();
     //   // Move move = new Move(1, 6, 1, 4);
     //   // Node node = new Node();
     //   // Board newBoard = board.copyBoard();
@@ -48,12 +51,21 @@ public class Main {
     //   // node.addMove(newNode);
     // }
 
+    Move move = brain.findNextBestMove(board);
 
-    // brain.findAllMoves(board, 0, null);
-
-    
     long b = System.currentTimeMillis();
-
     System.out.println(b - a);
+
+    System.out.println(move);
+
+
+    // ArrayList<Move> moves = brain.findCurrentMoves(board);
+
+    // System.out.println(moves);
+    // System.out.println("-");
+
+    // brain.orderMoves(moves, board);
+
+    // System.out.println(moves);
   }
 }

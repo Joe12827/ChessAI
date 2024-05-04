@@ -94,9 +94,11 @@ public class Board {
         Board boardCopy = new Board(true);
 
         // for (Piece piece : pieces) {
-        //     Piece newPiece = piece.copyPiece();
-        //     boardCopy.tiles[piece.col][piece.row] = newPiece;
-        //     boardCopy.pieces.add(newPiece);
+        //     if (!piece.killed) {
+        //         Piece newPiece = piece.copyPiece();
+        //         boardCopy.tiles[piece.col][piece.row] = piece.copyPiece();
+        //         boardCopy.pieces.add(newPiece);
+        //     }
         // }
 
         for (int row = 7; row >= 0; row--) {

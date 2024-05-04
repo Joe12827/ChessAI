@@ -54,6 +54,37 @@ public class Brain {
         return movesTotal;
     }
 
+    public void orderMoves(ArrayList<Move> moves, Board board) {
+        ArrayList<MoveUtility> moveUtilityList = new ArrayList<>();
+        int newUtility;
+        int currentUtility;
+        int utilityChange; // Always positive
+        
+        
+        for (Move move : moves) {
+            currentUtility = board.totalUtility;
+            board.makeFastMove(move);
+            newUtility = board.totalUtility;
+            board.reverseMove();
+
+            if (board.state == State.WHITE_TURN) {
+                utilityChange = currentUtility - newUtility;
+            } else {
+                utilityChange = newUtility - currentUtility;
+            }
+
+            moveUtilityList.add(new MoveUtility(move, utilityChange));
+        }
+        moveUtilityList.sort(null);
+        moves.clear();
+        for (MoveUtility moveUtility : moveUtilityList) {
+            moves.add(moveUtility.move);
+        }
+    }
+
+
+
+
     public void findAllMoves(Board board, int depth, Node node) {
         // System.out.println("DEPTH: " + depth);
         // System.out.println(board);
@@ -116,9 +147,9 @@ public class Brain {
         return minimax;
     }
 
+
     public int calculateMinimax (Board board, Node node, int depth, int alpha, int beta) {
         // If node is a leaf node (no children), assign its utility as its Minimax value
-
         if (depth == 0) {
             node = new Node(null, board.totalUtility, board.whitesTurn());
             minimax.setRoot(node);
@@ -141,6 +172,7 @@ public class Brain {
         }
 
         ArrayList<Move> moves = findCurrentMoves(board);
+        orderMoves(moves, board);
 
         // Recursively calculate Minimax values for child nodes
         if (node.isMaxPlayer()) {
