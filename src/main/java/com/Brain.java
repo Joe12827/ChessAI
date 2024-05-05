@@ -15,12 +15,14 @@ public class Brain {
 
 
     MiniMax minimax;
+    TranspositionTable stateTable;
 
     Brain (boolean white, int maxDepth, Board board) {
         this.white = white;
         maxPlayer = white;
         this.maxDepth = maxDepth;
         minimax = new MiniMax(board);
+        stateTable = new TranspositionTable();
     }
 
     public ArrayList<Move> findCurrentMoves(Board board) {
@@ -222,6 +224,14 @@ public class Brain {
 
     public Move findNextBestMove (Board board) {
         // System.out.println(board);
+
+        Move bestMove = null;
+        bestMove = stateTable.checkState(board, maxDepth);
+        if (bestMove != null) {
+            System.out.println("State in state table (no calc needed)");
+            return bestMove;
+        }
+
         Random rand = new Random();
         calculateMinimax(board, null, 0, -1000, 1000);
         double bestValue;
@@ -231,8 +241,8 @@ public class Brain {
             bestValue = 100;
         }
 
-        Move bestMove = null;
         boolean first = true;
+        boolean tie = false;
         // System.out.println(minimax.getRoot());
         for (Node node : minimax.getRoot().getMoves()) {
             // System.out.println(node.getMinimaxValue());
@@ -247,6 +257,7 @@ public class Brain {
                 }
                 if (node.getMinimaxValue() == bestValue && rand.nextBoolean()) {
                     bestMove = node.getMove();
+                    tie = true;
                 }
             } else {
                 if (node.getMinimaxValue() < bestValue) {
@@ -255,11 +266,16 @@ public class Brain {
                 }
                 if (node.getMinimaxValue() == bestValue && rand.nextBoolean()) {
                     bestMove = node.getMove();
+                    tie = true;
                 }
             }
         }
         // System.out.printf("MOVE: " + bestMove + ": %.3f\n", bestValue);
-
+        if (!tie) { // If there was a clear best move add it (no ties)
+            System.out.println("ADDED STATE");
+            stateTable.addMove(board, maxDepth, bestMove);
+        }
+        
         return bestMove;
     }
 

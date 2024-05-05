@@ -5,6 +5,7 @@ public class Queen extends Piece {
 
     Queen(boolean white, int col, int row) {
         super(white, col, row, 9);
+        name = "Queen";
     }
 
     @Override

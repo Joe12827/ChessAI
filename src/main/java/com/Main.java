@@ -43,9 +43,12 @@ public class Main {
     //   // node.addMove(newNode);
     // }
 
-    board.makeMove(new Move(4, 1, 4, 3));
-    board.makeMove(new Move(2, 6, 2, 4));
-    System.out.println(board);
+    // board.makeMove(new Move(4, 1, 4, 3));
+    // board.makeMove(new Move(2, 6, 2, 4));
+    // System.out.println(board);
+    // Board newBoard = board.copyBoard();
+    // board.makeMove(new Move(0, 1, 0, 2));
+    // System.out.println(board.equals(newBoard));
 
     for (int i = 0; i < 10;) {
       if (board.state == State.WHITE_WINNER || board.state == State.BLACK_WINNER) {

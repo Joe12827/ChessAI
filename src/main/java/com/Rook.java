@@ -6,11 +6,13 @@ public class Rook extends Piece {
 
     Rook(boolean white, int col, int row) {
         super(white, col, row, 5);
+        name = "Rook";
     }
 
     Rook(boolean white, int col, int row, boolean castable) {
         super(white, col, row, 5);
         this.castleable = castable;
+        name = "Rook";
     }
 
     @Override

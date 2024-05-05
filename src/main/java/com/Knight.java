@@ -6,6 +6,7 @@ public class Knight extends Piece {
 
     Knight(boolean white, int col, int row) {
         super(white, col, row, 3);
+        name = "Knight";
     }
 
     @Override

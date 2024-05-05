@@ -95,6 +95,24 @@ public class Board {
         return pieces;
     }
 
+    public boolean equals(Board otherBoard) {
+        for (int row = 7; row >= 0; row--) {
+            for (int col = 0; col < 8; col++) {
+                if (tiles[col][row] == null && otherBoard.tiles[col][row] == null) {
+                    continue;
+                }
+                if (tiles[col][row] != null && otherBoard.tiles[col][row] != null) {
+                    if (!tiles[col][row].equals(otherBoard.tiles[col][row])) {
+                        return false;
+                    }
+                } else if (tiles[col][row] != null || otherBoard.tiles[col][row] != null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public Board copyBoard () {
         Board boardCopy = new Board(true);
 

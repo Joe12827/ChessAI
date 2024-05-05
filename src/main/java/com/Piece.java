@@ -16,6 +16,11 @@ public abstract class Piece {
         this.value = value;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return (name == ((Piece) obj).name);
+    }
+
     public abstract Piece copyPiece();
 
     public boolean inBounds (int col, int row) {
