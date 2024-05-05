@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+// document.addEventListener('DOMContentLoaded', () => {
     const squares = document.querySelectorAll('.chess-board td');
 
     // Initial chess piece positions
@@ -25,4 +25,4 @@ document.addEventListener('DOMContentLoaded', () => {
             square.appendChild(pieceImg);
         }
     });
-});
+// });

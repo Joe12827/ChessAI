@@ -1,6 +1,7 @@
 package com;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.Board.State;
 
@@ -72,7 +73,6 @@ public class Brain {
             } else {
                 utilityChange = newUtility - currentUtility;
             }
-
             moveUtilityList.add(new MoveUtility(move, utilityChange));
         }
         moveUtilityList.sort(null);
@@ -222,23 +222,43 @@ public class Brain {
 
     public Move findNextBestMove (Board board) {
         // System.out.println(board);
+        Random rand = new Random();
         calculateMinimax(board, null, 0, -1000, 1000);
-        double bestValue = 0;
+        double bestValue;
+        if (board.whitesTurn()) {
+            bestValue = 0;
+        } else {
+            bestValue = 100;
+        }
+
         Move bestMove = null;
         boolean first = true;
-
+        // System.out.println(minimax.getRoot());
         for (Node node : minimax.getRoot().getMoves()) {
             // System.out.println(node.getMinimaxValue());
             if (first) {
                 first = false;
                 bestValue = node.getMinimaxValue();
                 bestMove = node.getMove();
-            } else if (node.getMinimaxValue() < bestValue) {
-                bestValue = node.getMinimaxValue();
-                bestMove = node.getMove();
+            } else if (board.whitesTurn()) {
+                if (node.getMinimaxValue() > bestValue) {
+                    bestValue = node.getMinimaxValue();
+                    bestMove = node.getMove();
+                }
+                if (node.getMinimaxValue() == bestValue && rand.nextBoolean()) {
+                    bestMove = node.getMove();
+                }
+            } else {
+                if (node.getMinimaxValue() < bestValue) {
+                    bestValue = node.getMinimaxValue();
+                    bestMove = node.getMove();
+                }
+                if (node.getMinimaxValue() == bestValue && rand.nextBoolean()) {
+                    bestMove = node.getMove();
+                }
             }
         }
-        System.out.printf("MOVE: " + bestMove + ": %.3f\n", bestValue);
+        // System.out.printf("MOVE: " + bestMove + ": %.3f\n", bestValue);
 
         return bestMove;
     }

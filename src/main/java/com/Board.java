@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Board {
     Piece[][] tiles = new Piece[8][8];
     ArrayList<Piece> pieces = new ArrayList<>();
-    int whiteUtility = 139;
-    int blackUtility = 139;
+    double whiteUtility;
+    double blackUtility;
     double totalUtility = (double)whiteUtility / blackUtility;
     State state = State.WHITE_TURN;
     ArrayList<Object[]> moveHistory = new ArrayList<>();
@@ -67,13 +67,18 @@ public class Board {
             tiles[6][7] = new Knight(false, 6, 7);
             tiles[7][7] = new Rook(false, 7, 7);
 
+            double startingUtility = 0;
             for (int row = 7; row >= 0; row--) {
                 for (int col = 0; col < 8; col++) {
                     if (tiles[col][row] != null) {
                         pieces.add(tiles[col][row]);
+                        startingUtility += tiles[col][row].value;
                     }
                 }
             }
+            whiteUtility = startingUtility / 2;
+            blackUtility = whiteUtility;
+            totalUtility = 1;
         }
         
     }
@@ -197,7 +202,7 @@ public class Board {
         moveHistory.add(new Object[]{move, stopPiece, false});
 
         if (tiles[move.getStop()[0]][move.getStop()[1]] != null) {
-            int value = tiles[move.getStop()[0]][move.getStop()[1]].getValue();
+            double value = tiles[move.getStop()[0]][move.getStop()[1]].getValue();
             if (tiles[move.getStop()[0]][move.getStop()[1]].isWhite()) {
                 whiteUtility -= value;
             } else {
@@ -207,11 +212,14 @@ public class Board {
             if (tiles[move.getStop()[0]][move.getStop()[1]] instanceof King) {
                 if (state == State.WHITE_TURN) {
                     state = State.WHITE_WINNER;
+                    blackUtility -= 100000;
                 } else {
                     state = State.BLACK_WINNER;
+                    whiteUtility -= 100000;
                 }
             }
             tiles[move.getStop()[0]][move.getStop()[1]].kill();
+            totalUtility = (double)whiteUtility / blackUtility;
         }
 
         tiles[move.getStop()[0]][move.getStop()[1]] = piece;
@@ -290,7 +298,7 @@ public class Board {
         Piece stopPiece = tiles[move.getStop()[0]][move.getStop()[1]];
         moveHistory.add(new Object[]{move, stopPiece, false});
         if (stopPiece != null) {
-            int value = stopPiece.getValue();
+            double value = stopPiece.getValue();
             if (stopPiece.isWhite()) {
                 whiteUtility -= value;
             } else {
@@ -298,12 +306,14 @@ public class Board {
             }
 
             stopPiece.kill();
-            if (value == 100) {
+            if (stopPiece.name == "King") {
                 // System.out.println("WINNER");
                 if (state == State.WHITE_TURN) {
                     state = State.WHITE_WINNER;
+                    blackUtility -= 100000;
                 } else {
                     state = State.BLACK_WINNER;
+                    whiteUtility -= 100000;
                 }
             }
             totalUtility = (double)whiteUtility / blackUtility;
@@ -365,8 +375,8 @@ public class Board {
             }
 
             if (castle) {
-                System.out.println("REVERSING CASTLE");
-                System.out.println(lastMove);
+                // System.out.println("REVERSING CASTLE");
+                // System.out.println(lastMove);
                 tiles[lastMove.getStart()[0]][lastMove.getStart()[1]] = tiles[oldKingX][oldKingY];
                 tiles[lastMove.getStop()[0]][lastMove.getStop()[1]] = stopPiece;
                 tiles[lastMove.getStart()[0]][lastMove.getStart()[1]].setLocation(lastMove.getStart()[0], lastMove.getStart()[1]);
@@ -408,9 +418,13 @@ public class Board {
             state = State.WHITE_TURN;
         } else if (state == State.WHITE_WINNER)  {
             state = State.WHITE_TURN;
+            blackUtility += 100000;
         } else if (state == State.BLACK_WINNER)  {
             state = State.BLACK_TURN;
+            blackUtility += 100000;
         }
+
+        totalUtility = (double)whiteUtility / blackUtility;
 
         moveHistory.removeLast();
     }
@@ -431,10 +445,10 @@ public class Board {
             }
             str += "|";
             if (r == 4) {
-                str += " B: " + blackUtility;
+                str += " B: " + String.format ("%.3f", blackUtility);
             }
             if (r == 3) {
-                str += " W: " + whiteUtility;
+                str += " W: " + String.format ("%.3f", whiteUtility);
             }
             str += "\n";
             str += "-----------------";
@@ -444,7 +458,7 @@ public class Board {
                 } else {
                     str += " Turn: BLACK";
                 }
-                str += "  Ratio: " + totalUtility;
+                str += "  Ratio: " + String.format ("%.3f", totalUtility);
             }
             str += "\n";
         }

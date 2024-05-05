@@ -6,12 +6,12 @@ public class King extends Piece {
     public static int[][] possibleMoves = {{-1, 1},{0, 1},{1, 1},{1, 0},{1, -1},{0, -1},{-1, -1},{-1, 0}};
 
     King(boolean white, int col, int row) {
-        super(white, col, row, 100);
+        super(white, col, row, 5);
         name = "King";
     }
 
     King(boolean white, int col, int row, boolean castable) {
-        super(white, col, row, 100);
+        super(white, col, row, 5);
         this.castleable = castable;
         name = "King";
     }

@@ -62,7 +62,7 @@ public class Node {
         String str = "[ ";
         for (Node node : moves) {
             str += node.move;
-            str += "(" + node.minimaxValue + ") | ";
+            str += "(" + String.format("%.3f", node.minimaxValue) + ") | ";
         }
         str += " ]";
         return str;

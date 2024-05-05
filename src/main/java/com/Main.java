@@ -1,21 +1,12 @@
 package com;
 import java.util.ArrayList;
 
+import com.Board.State;
+
 public class Main {
   public static void main(String[] args) {
     Board board = new Board(false);
     Brain brain = new Brain(false, 7, board);
-
-    board.makeMove(new Move(4, 1, 4, 3));
-    board.makeMove(new Move(3, 6, 3, 4));
-    board.makeMove(new Move(6, 0, 5, 2));
-    board.makeMove(new Move(3, 4, 3, 3));
-    board.makeMove(new Move(5, 0, 4, 1));
-    board.makeMove(new Move(3, 3, 3, 2));
-    board.makeMove(new Move(4, 0, 7, 0)); // CASTLE
-    board.makeMove(new Move(3, 7, 3, 5));
-    board.makeMove(new Move(1, 1, 1, 2));
-    board.makeMove(new Move(3, 2, 4, 1));
 
     System.out.println(board);
     
@@ -52,15 +43,28 @@ public class Main {
     //   // node.addMove(newNode);
     // }
 
-    // Move move = brain.findNextBestMove(board);
+    board.makeMove(new Move(4, 1, 4, 3));
+    board.makeMove(new Move(2, 6, 2, 4));
+    System.out.println(board);
+
+    for (int i = 0; i < 10;) {
+      if (board.state == State.WHITE_WINNER || board.state == State.BLACK_WINNER) {
+        board = new Board(false);
+        board.makeMove(new Move(4, 1, 4, 3));
+        board.makeMove(new Move(2, 6, 2, 4));
+        i++;
+      }
+      board.makeFastMove(brain.findNextBestMove(board));
+      System.out.println(board);
+    }
+    
+
 
     long b = System.currentTimeMillis();
     System.out.println(b - a);
 
     // System.out.println(move);
 
-    System.out.println(board.whiteUtility + "/" + board.blackUtility);
-    System.out.println(board.totalUtility);
 
     // System.out.println(board.whiteUtility / board.blackUtility);
 

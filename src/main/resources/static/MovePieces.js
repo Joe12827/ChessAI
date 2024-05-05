@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const squares = document.querySelectorAll('.chess-board td');
+    // const squares = document.querySelectorAll('.chess-board td');
     let startSquareId = null;
     let move = [];
     const moveSound = new Audio('/Sounds/move-self.mp3');

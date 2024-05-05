@@ -6,10 +6,10 @@ public abstract class Piece {
     public boolean white = false;
     public int col;
     public int row;
-    public int value;
+    public double value;
     public String name = "";
     
-    Piece(boolean white, int col, int row, int value) {
+    Piece(boolean white, int col, int row, double value) {
         this.white = white;
         this.col = col;
         this.row = row;
@@ -37,7 +37,7 @@ public abstract class Piece {
 
     public abstract ArrayList<Move> Moves(Board board);
 
-    protected int getValue(){
+    protected double getValue(){
         return this.value;
     }
 
