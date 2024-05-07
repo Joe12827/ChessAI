@@ -7,7 +7,6 @@ public class Board {
     ArrayList<Piece> pieces = new ArrayList<>();
     double whiteUtility;
     double blackUtility;
-    double totalUtility = (double)whiteUtility / blackUtility;
     State state = State.WHITE_TURN;
     ArrayList<Object[]> moveHistory = new ArrayList<>();
 
@@ -78,7 +77,6 @@ public class Board {
             }
             whiteUtility = startingUtility / 2;
             blackUtility = whiteUtility;
-            totalUtility = 1;
         }
         
     }
@@ -135,7 +133,6 @@ public class Board {
         boardCopy.state = state;
         boardCopy.whiteUtility = whiteUtility;
         boardCopy.blackUtility = blackUtility;
-        boardCopy.totalUtility = totalUtility;
         return boardCopy;
     }
 
@@ -226,18 +223,18 @@ public class Board {
             } else {
                 blackUtility -= value;
             }
-            totalUtility = (double)whiteUtility / blackUtility;
-            if (tiles[move.getStop()[0]][move.getStop()[1]] instanceof King) {
+
+            if (tiles[move.getStop()[0]][move.getStop()[1]].name == "King") {
                 if (state == State.WHITE_TURN) {
                     state = State.WHITE_WINNER;
-                    blackUtility -= 100000;
+                    blackUtility = 0;
                 } else {
                     state = State.BLACK_WINNER;
-                    whiteUtility -= 100000;
+                    whiteUtility = 0;
                 }
+
             }
             tiles[move.getStop()[0]][move.getStop()[1]].kill();
-            totalUtility = (double)whiteUtility / blackUtility;
         }
 
         tiles[move.getStop()[0]][move.getStop()[1]] = piece;
@@ -246,7 +243,7 @@ public class Board {
 
         if (state == State.WHITE_TURN) {
             state = State.BLACK_TURN;
-        } else {
+        } else if (state == State.BLACK_TURN) {
             state = State.WHITE_TURN;
         }
 
@@ -328,13 +325,12 @@ public class Board {
                 // System.out.println("WINNER");
                 if (state == State.WHITE_TURN) {
                     state = State.WHITE_WINNER;
-                    blackUtility -= 100000;
+                    blackUtility = 0;
                 } else {
                     state = State.BLACK_WINNER;
-                    whiteUtility -= 100000;
+                    whiteUtility = 0;
                 }
             }
-            totalUtility = (double)whiteUtility / blackUtility;
         }
 
         tiles[move.getStop()[0]][move.getStop()[1]] = piece;
@@ -427,7 +423,6 @@ public class Board {
             } else {
                 blackUtility += stopPiece.value;
             }
-            totalUtility = (double)whiteUtility / blackUtility;
         }
 
         if (state == State.WHITE_TURN) {
@@ -436,13 +431,30 @@ public class Board {
             state = State.WHITE_TURN;
         } else if (state == State.WHITE_WINNER)  {
             state = State.WHITE_TURN;
-            blackUtility += 100000;
+            blackUtility = 0;
+            for (int row = 7; row >= 0; row--) {
+                for (int col = 0; col < 8; col++) {
+                    if (tiles[col][row] != null) {
+                        if (!tiles[col][row].isWhite()) {
+                            blackUtility += tiles[col][row].value;
+                        }
+                    }
+                }
+            }
+
         } else if (state == State.BLACK_WINNER)  {
             state = State.BLACK_TURN;
-            blackUtility += 100000;
+            whiteUtility = 0;
+            for (int row = 7; row >= 0; row--) {
+                for (int col = 0; col < 8; col++) {
+                    if (tiles[col][row] != null) {
+                        if (tiles[col][row].isWhite()) {
+                            whiteUtility += tiles[col][row].value;
+                        }
+                    }
+                }
+            }
         }
-
-        totalUtility = (double)whiteUtility / blackUtility;
 
         moveHistory.removeLast();
     }
@@ -468,18 +480,20 @@ public class Board {
             if (r == 3) {
                 str += " W: " + String.format ("%.3f", whiteUtility);
             }
-            str += "\n";
-            str += "-----------------";
+            // str += "\n";
+            // str += "-----------------";
             if (r == 4) {
                 if (state == State.WHITE_TURN) {
                     str += " Turn: WHITE";
                 } else {
                     str += " Turn: BLACK";
                 }
-                str += "  Ratio: " + String.format ("%.3f", totalUtility);
+                str += " Ratio: " + String.format ("%.3f", Brain.utilityDifference(this));
             }
             str += "\n";
         }
+        str += "-----------------";
+        str += "\n";
 
     
         // str += brain.getMinimax().toString();

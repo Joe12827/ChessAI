@@ -57,17 +57,24 @@ public class Brain {
         return movesTotal;
     }
 
+    public static double utilityDifference (Board board) {
+        double whiteUtility = board.whiteUtility;
+        double blackUtility = board.blackUtility;
+        return (((whiteUtility/(blackUtility + 1))+(blackUtility/(whiteUtility + 1)))-1) * (whiteUtility - blackUtility);
+    }
+
     public void orderMoves(ArrayList<Move> moves, Board board) {
         ArrayList<MoveUtility> moveUtilityList = new ArrayList<>();
         double newUtility;
         double currentUtility;
         double utilityChange; // Always positive
-        
+        boolean whitesTurn = board.whitesTurn();
         
         for (Move move : moves) {
-            currentUtility = board.totalUtility;
+
+            currentUtility = utilityDifference(board);
             board.makeFastMove(move);
-            newUtility = board.totalUtility;
+            newUtility = utilityDifference(board);
             board.reverseMove();
 
             if (board.state == State.WHITE_TURN) {
@@ -135,7 +142,7 @@ public class Brain {
 
             board.makeFastMove(move);
             // System.out.println(board);
-            Node newNode = new Node (move, board.totalUtility, board.whitesTurn());
+            Node newNode = new Node (move, utilityDifference(board), board.whitesTurn());
             node.addMove(newNode);
             if (!(board.state == State.WHITE_WINNER) && !(board.state == State.BLACK_WINNER)) {
                 findAllMoves(board, depth, newNode);
@@ -153,28 +160,30 @@ public class Brain {
     public double calculateMinimax (Board board, Node node, int depth, double alpha, double beta) {
         // If node is a leaf node (no children), assign its utility as its Minimax value
         if (depth == 0) {
-            node = new Node(null, board.totalUtility, board.whitesTurn());
+            node = new Node(null, boardEvaluation(board), board.whitesTurn());
             minimax.setRoot(node);
             board = board.copyBoard();
             // System.out.println("ROOT");
         }
 
+        ArrayList<Move> moves = findCurrentMoves(board);
+        orderMoves(moves, board);
         // System.out.println(board.state);
 
         if (board.state == State.WHITE_WINNER || board.state == State.BLACK_WINNER) {
             node.setMinimaxValue(node.totalUtility);
-            // System.out.println("H");
-            return board.totalUtility;
+            System.out.println("H");
+            return boardEvaluation(board);
         }
 
         if (depth == maxDepth) {
-            // System.out.println("End Utility: " + node.totalUtility);
+            // if (node.totalUtility > 100 || node.totalUtility < -100) {
+            //     System.out.println("End Utility: " + node.totalUtility);
+            // }
+            
             node.setMinimaxValue(node.totalUtility);
             return node.totalUtility;
         }
-
-        ArrayList<Move> moves = findCurrentMoves(board);
-        orderMoves(moves, board);
 
         // Recursively calculate Minimax values for child nodes
         if (node.isMaxPlayer()) {
@@ -182,7 +191,7 @@ public class Brain {
             double maxMinimaxValue = Integer.MIN_VALUE;
             for (Move move : moves) {
                 board.makeFastMove(move);
-                Node newNode = new Node(move, board.totalUtility, board.whitesTurn());
+                Node newNode = new Node(move, boardEvaluation(board), !node.isMaxPlayer());
                 node.addMove(newNode);
 
                 double value = calculateMinimax(board, newNode, depth + 1, alpha, beta);
@@ -203,7 +212,7 @@ public class Brain {
             double minMinimaxValue = Integer.MAX_VALUE;
             for (Move move : moves) {
                 board.makeFastMove(move);
-                Node newNode = new Node (move, board.totalUtility, board.whitesTurn());
+                Node newNode = new Node (move, boardEvaluation(board), !node.isMaxPlayer());
                 node.addMove(newNode);
 
                 double value = calculateMinimax(board, newNode, depth + 1, alpha, beta);
@@ -222,6 +231,20 @@ public class Brain {
         }
     }
 
+    public double boardEvaluation (Board board) {
+        double pieceValueRatio = utilityDifference(board);
+        double moveCount = findCurrentMoves(board).size();
+
+        if (!board.whitesTurn()) {
+            moveCount = moveCount * -1;
+        }
+
+        double eval = pieceValueRatio;
+        eval += (moveCount / 5000);
+
+        return eval;
+    }
+
     public Move findNextBestMove (Board board) {
         // System.out.println(board);
 
@@ -233,7 +256,7 @@ public class Brain {
         }
 
         Random rand = new Random();
-        calculateMinimax(board, null, 0, -1000, 1000);
+        calculateMinimax(board, null, 0, -100000, 100000);
         double bestValue;
         if (board.whitesTurn()) {
             bestValue = 0;
@@ -243,7 +266,7 @@ public class Brain {
 
         boolean first = true;
         boolean tie = false;
-        // System.out.println(minimax.getRoot());
+        System.out.println(minimax.getRoot());
         for (Node node : minimax.getRoot().getMoves()) {
             // System.out.println(node.getMinimaxValue());
             if (first) {
@@ -254,26 +277,24 @@ public class Brain {
                 if (node.getMinimaxValue() > bestValue) {
                     bestValue = node.getMinimaxValue();
                     bestMove = node.getMove();
-                }
-                if (node.getMinimaxValue() == bestValue && rand.nextBoolean()) {
+                } else if (node.getMinimaxValue() == bestValue && rand.nextBoolean()) {
                     bestMove = node.getMove();
-                    tie = true;
                 }
             } else {
                 if (node.getMinimaxValue() < bestValue) {
                     bestValue = node.getMinimaxValue();
                     bestMove = node.getMove();
-                }
-                if (node.getMinimaxValue() == bestValue && rand.nextBoolean()) {
+                } else if (node.getMinimaxValue() == bestValue && rand.nextBoolean()) {
                     bestMove = node.getMove();
-                    tie = true;
                 }
             }
         }
-        // System.out.printf("MOVE: " + bestMove + ": %.3f\n", bestValue);
+        System.out.printf("MOVE: " + bestMove + ": %.3f\n", bestValue);
         if (!tie) { // If there was a clear best move add it (no ties)
             System.out.println("ADDED STATE");
             stateTable.addMove(board, maxDepth, bestMove);
+        } else {
+            System.out.println("TIE");
         }
         
         return bestMove;
